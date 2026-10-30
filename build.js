@@ -1318,9 +1318,9 @@ const html = `<!DOCTYPE html>
       </div>
 
       <div class="footer-meta">
-        <span>${items.length} visual assets</span>
+        <span id="footerAssetsCount">${items.length} visual assets</span>
         <span>•</span>
-        <span>${totalMbStr} total media</span>
+        <span id="footerTotalMb">${totalMbStr} total media</span>
         <span>•</span>
         <span>Continuous Netlify Sync</span>
       </div>
@@ -1633,7 +1633,43 @@ const html = `<!DOCTYPE html>
         state.filtered.sort((a, b) => a.file.localeCompare(b.file));
       }
 
+      updateGlobalStats();
       renderGallery();
+    }
+
+    function updateGlobalStats() {
+      const total = state.items.length;
+      const gifs = state.items.filter(x => x.type === 'gif').length;
+      const mp4s = state.items.filter(x => x.type === 'mp4').length;
+      const totalBytes = state.items.reduce((acc, x) => acc + (x.size || 0), 0);
+      const totalMbStr = Math.round(totalBytes / (1024 * 1024)) + ' MB';
+
+      const badgeTotal = document.getElementById('badgeTotal');
+      if (badgeTotal) badgeTotal.textContent = \`\${total} CLIPS\`;
+
+      const countAll = document.getElementById('countAll');
+      if (countAll) countAll.textContent = \`(\${total})\`;
+
+      const countGifs = document.getElementById('countGifs');
+      if (countGifs) countGifs.textContent = \`(\${gifs})\`;
+
+      const countMp4s = document.getElementById('countMp4s');
+      if (countMp4s) countMp4s.textContent = \`(\${mp4s})\`;
+
+      const totalSizeBubble = document.getElementById('totalSizeBubble');
+      if (totalSizeBubble) totalSizeBubble.textContent = \`Total Size: \${totalMbStr}\`;
+
+      const footerAssetsCount = document.getElementById('footerAssetsCount');
+      if (footerAssetsCount) footerAssetsCount.textContent = \`\${total} visual assets\`;
+
+      const footerTotalMb = document.getElementById('footerTotalMb');
+      if (footerTotalMb) footerTotalMb.textContent = \`\${totalMbStr} total media\`;
+
+      const sortOpt1 = document.querySelector('#sortSelect option[value="natural"]');
+      if (sortOpt1) sortOpt1.textContent = \`Sort: #1 → #\${total}\`;
+
+      const sortOpt2 = document.querySelector('#sortSelect option[value="natural-desc"]');
+      if (sortOpt2) sortOpt2.textContent = \`Sort: #\${total} → #1\`;
     }
 
     function renderGallery() {
@@ -2056,6 +2092,7 @@ const html = `<!DOCTYPE html>
           const freshItems = await res.json();
           if (Array.isArray(freshItems) && freshItems.length > 0) {
             state.items = freshItems;
+            updateGlobalStats();
             applyFiltersAndSort();
           }
         }
