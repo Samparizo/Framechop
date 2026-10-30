@@ -78,6 +78,15 @@ exports.handler = async (event, context) => {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON body.' }) };
   }
 
+  // Quick Auth Verification Check
+  if (payload.action === 'verify_auth') {
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ success: true, message: 'Admin authenticated successfully.' })
+    };
+  }
+
   const { files } = payload; // Array of { filename, content (base64) }
 
   if (!files || !Array.isArray(files) || files.length === 0) {
