@@ -9,6 +9,20 @@ exports.handler = async (event, context) => {
   const repo = process.env.GITHUB_REPO || 'Moodboard-Site';
   const branch = process.env.GITHUB_BRANCH || 'main';
 
+  const expectedPassword = process.env.ADMIN_PASSWORD || 'Aryan@97';
+  let payload = {};
+  try {
+    payload = JSON.parse(event.body || '{}');
+  } catch (e) {}
+
+  const providedPassword = event.headers['x-admin-password'] || payload.password;
+  if (providedPassword && providedPassword !== expectedPassword) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Unauthorized: Invalid Admin Password.' })
+    };
+  }
+
   if (!tokenGH) {
     return {
       statusCode: 500,
