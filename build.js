@@ -28,6 +28,24 @@ function naturalCompare(a, b) {
   return 0;
 }
 
+// Support files placed in GIFS folder by copying them to root
+const gifsDir = path.join(__dirname, 'GIFS');
+if (fs.existsSync(gifsDir) && fs.statSync(gifsDir).isDirectory()) {
+  try {
+    const gifFiles = fs.readdirSync(gifsDir);
+    for (const gf of gifFiles) {
+      const ext = path.extname(gf).toLowerCase();
+      if (ext === '.gif' || ext === '.mp4') {
+        const srcPath = path.join(gifsDir, gf);
+        const destPath = path.join(__dirname, gf);
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+  } catch (e) {
+    console.warn('GIFS copy note:', e.message);
+  }
+}
+
 // 1. Scan directory for GIFs and MP4s
 const allFiles = fs.readdirSync(__dirname);
 const mediaFiles = allFiles.filter(f => {
@@ -1633,7 +1651,7 @@ const html = `<!DOCTYPE html>
 
       const html = state.filtered.map((item, idx) => {
         const isFav = state.favorites.has(item.file);
-        const encodedSrc = encodeURIComponent(item.file);
+        const encodedSrc = encodeURIComponent(item.file) + '?v=' + (item.size || Date.now());
         const isVideo = item.type === 'mp4';
 
         return \`
@@ -1756,7 +1774,7 @@ const html = `<!DOCTYPE html>
       lightboxTitle.textContent = item.file;
       lightboxSize.textContent = item.sizeStr;
 
-      const encodedSrc = encodeURIComponent(item.file);
+      const encodedSrc = encodeURIComponent(item.file) + '?v=' + (item.size || Date.now());
       const isVideo = item.type === 'mp4';
       const isFav = state.favorites.has(item.file);
 
@@ -2031,10 +2049,26 @@ const html = `<!DOCTYPE html>
       }, { passive: true });
     }
 
+    async function syncDynamicManifest() {
+      try {
+        const res = await fetch('media_list.json?t=' + Date.now());
+        if (res.ok) {
+          const freshItems = await res.json();
+          if (Array.isArray(freshItems) && freshItems.length > 0) {
+            state.items = freshItems;
+            applyFiltersAndSort();
+          }
+        }
+      } catch (e) {
+        // Fallback to embedded MEDIA_ITEMS
+      }
+    }
+
     function init() {
       updateFavCounts();
       setupEventListeners();
       applyFiltersAndSort();
+      syncDynamicManifest();
     }
 
     if (document.readyState === 'loading') {
