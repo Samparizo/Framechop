@@ -1156,11 +1156,16 @@
 
         <!-- Sort Select -->
         <select class="sort-select" id="sortSelect" title="Sort order">
-          <option value="natural">Sort: #1 → #72</option>
-          <option value="natural-desc">Sort: #72 → #1</option>
+          <option value="recent">⚡ Upload: Newest first</option>
+          <option value="oldest">Upload: Oldest first</option>
           <option value="size-desc">Size: Largest first</option>
           <option value="size-asc">Size: Smallest first</option>
-          <option value="name">Name: A to Z</option>
+          <option value="name-asc">Name: A → Z</option>
+          <option value="name-desc">Name: Z → A</option>
+          <option value="kind-gif">Kind: GIFs first</option>
+          <option value="kind-mp4">Kind: MP4s first</option>
+          <option value="natural">Sequence: #1 → #72</option>
+          <option value="natural-desc">Sequence: #72 → #1</option>
         </select>
 
         <!-- Auto-Play / Stream Presentation Mode -->
@@ -1194,7 +1199,7 @@
   <div class="info-banner">
     <div class="active-filters-info">
       <span>Showing <strong id="visibleCount">72</strong> visual clips</span>
-      <span class="tag-bubble" id="totalSizeBubble">Total Size: 103 MB</span>
+      <span class="tag-bubble" id="totalSizeBubble">Total Size: 102 MB</span>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
       <span style="font-size: 0.75rem; color: var(--text-dim);">Tap clip for full screen • Swipe to browse</span>
@@ -1237,7 +1242,7 @@
       <div class="footer-meta">
         <span id="footerAssetsCount">72 visual assets</span>
         <span>•</span>
-        <span id="footerTotalMb">103 MB total media</span>
+        <span id="footerTotalMb">102 MB total media</span>
         <span>•</span>
         <span>Continuous Netlify Sync</span>
       </div>
@@ -1402,7 +1407,7 @@
   <!-- Embedded Media Data & Runtime Logic -->
   <script>
     // Embedded Master Manifest
-    const MEDIA_ITEMS = [{"file":"clip (1).gif","size":2690520,"sizeStr":"2.6 MB","type":"gif"},{"file":"clip (1).mp4","size":1291062,"sizeStr":"1.2 MB","type":"mp4"},{"file":"clip (2).gif","size":340267,"sizeStr":"332 KB","type":"gif"},{"file":"clip (2).mp4","size":1060932,"sizeStr":"1.0 MB","type":"mp4"},{"file":"clip (3).gif","size":352364,"sizeStr":"344 KB","type":"gif"},{"file":"clip (3).mp4","size":4151873,"sizeStr":"4.0 MB","type":"mp4"},{"file":"clip (4).gif","size":346072,"sizeStr":"338 KB","type":"gif"},{"file":"clip (5).gif","size":442109,"sizeStr":"432 KB","type":"gif"},{"file":"clip (6).gif","size":816620,"sizeStr":"797 KB","type":"gif"},{"file":"clip (7).gif","size":847527,"sizeStr":"828 KB","type":"gif"},{"file":"clip (8).gif","size":439981,"sizeStr":"430 KB","type":"gif"},{"file":"clip (9).gif","size":186440,"sizeStr":"182 KB","type":"gif"},{"file":"clip (10).gif","size":477404,"sizeStr":"466 KB","type":"gif"},{"file":"clip (11).gif","size":1192087,"sizeStr":"1.1 MB","type":"gif"},{"file":"clip (12).gif","size":1192087,"sizeStr":"1.1 MB","type":"gif"},{"file":"clip (13).gif","size":3249889,"sizeStr":"3.1 MB","type":"gif"},{"file":"clip (14).gif","size":2483238,"sizeStr":"2.4 MB","type":"gif"},{"file":"clip (15).gif","size":1016020,"sizeStr":"992 KB","type":"gif"},{"file":"clip (16).gif","size":2798896,"sizeStr":"2.7 MB","type":"gif"},{"file":"clip (17).gif","size":2134954,"sizeStr":"2.0 MB","type":"gif"},{"file":"clip (18).gif","size":1042125,"sizeStr":"1018 KB","type":"gif"},{"file":"clip (19).gif","size":3654258,"sizeStr":"3.5 MB","type":"gif"},{"file":"clip (20).gif","size":627265,"sizeStr":"613 KB","type":"gif"},{"file":"clip (21).gif","size":500768,"sizeStr":"489 KB","type":"gif"},{"file":"clip (22).gif","size":2184092,"sizeStr":"2.1 MB","type":"gif"},{"file":"clip (23).gif","size":714505,"sizeStr":"698 KB","type":"gif"},{"file":"clip (24).gif","size":837764,"sizeStr":"818 KB","type":"gif"},{"file":"clip (25).gif","size":252841,"sizeStr":"247 KB","type":"gif"},{"file":"clip (26).gif","size":1592885,"sizeStr":"1.5 MB","type":"gif"},{"file":"clip (27).gif","size":316166,"sizeStr":"309 KB","type":"gif"},{"file":"clip (28).gif","size":318221,"sizeStr":"311 KB","type":"gif"},{"file":"clip (29).gif","size":1045758,"sizeStr":"1021 KB","type":"gif"},{"file":"clip (30).gif","size":2746826,"sizeStr":"2.6 MB","type":"gif"},{"file":"clip (31).gif","size":3092283,"sizeStr":"2.9 MB","type":"gif"},{"file":"clip (32).gif","size":2697055,"sizeStr":"2.6 MB","type":"gif"},{"file":"clip (33).gif","size":1052839,"sizeStr":"1.0 MB","type":"gif"},{"file":"clip (34).gif","size":808377,"sizeStr":"789 KB","type":"gif"},{"file":"clip (35).gif","size":275601,"sizeStr":"269 KB","type":"gif"},{"file":"clip (36).gif","size":82314,"sizeStr":"80 KB","type":"gif"},{"file":"clip (37).gif","size":1899832,"sizeStr":"1.8 MB","type":"gif"},{"file":"clip (38).gif","size":1769666,"sizeStr":"1.7 MB","type":"gif"},{"file":"clip (39).gif","size":1988859,"sizeStr":"1.9 MB","type":"gif"},{"file":"clip (40).gif","size":1599748,"sizeStr":"1.5 MB","type":"gif"},{"file":"clip (41).gif","size":1599748,"sizeStr":"1.5 MB","type":"gif"},{"file":"clip (42).gif","size":2616623,"sizeStr":"2.5 MB","type":"gif"},{"file":"clip (43).gif","size":1256100,"sizeStr":"1.2 MB","type":"gif"},{"file":"clip (44).gif","size":2332161,"sizeStr":"2.2 MB","type":"gif"},{"file":"clip (45).gif","size":1895316,"sizeStr":"1.8 MB","type":"gif"},{"file":"clip (46).gif","size":1767130,"sizeStr":"1.7 MB","type":"gif"},{"file":"clip (47).gif","size":1977969,"sizeStr":"1.9 MB","type":"gif"},{"file":"clip (48).gif","size":1389542,"sizeStr":"1.3 MB","type":"gif"},{"file":"clip (49).gif","size":1389542,"sizeStr":"1.3 MB","type":"gif"},{"file":"clip (50).gif","size":2077254,"sizeStr":"2.0 MB","type":"gif"},{"file":"clip (51).gif","size":4338488,"sizeStr":"4.1 MB","type":"gif"},{"file":"clip (52).gif","size":2262960,"sizeStr":"2.2 MB","type":"gif"},{"file":"clip (53).gif","size":610510,"sizeStr":"596 KB","type":"gif"},{"file":"clip (54).gif","size":651481,"sizeStr":"636 KB","type":"gif"},{"file":"clip (55).gif","size":4069777,"sizeStr":"3.9 MB","type":"gif"},{"file":"clip (56).gif","size":2357027,"sizeStr":"2.2 MB","type":"gif"},{"file":"clip (57).gif","size":234122,"sizeStr":"229 KB","type":"gif"},{"file":"clip (58).gif","size":596456,"sizeStr":"582 KB","type":"gif"},{"file":"clip (59).gif","size":294435,"sizeStr":"288 KB","type":"gif"},{"file":"clip (60).gif","size":1696872,"sizeStr":"1.6 MB","type":"gif"},{"file":"clip (61).gif","size":1226207,"sizeStr":"1.2 MB","type":"gif"},{"file":"clip (62).gif","size":3454198,"sizeStr":"3.3 MB","type":"gif"},{"file":"clip (63).gif","size":3315843,"sizeStr":"3.2 MB","type":"gif"},{"file":"clip (64).gif","size":1902246,"sizeStr":"1.8 MB","type":"gif"},{"file":"clip (65).gif","size":1698686,"sizeStr":"1.6 MB","type":"gif"},{"file":"clip (66).gif","size":1660379,"sizeStr":"1.6 MB","type":"gif"},{"file":"clip.gif","size":166674,"sizeStr":"163 KB","type":"gif"},{"file":"clip.mp4","size":1007763,"sizeStr":"984 KB","type":"mp4"},{"file":"piechart.gif","size":69450,"sizeStr":"68 KB","type":"gif"}];
+    const MEDIA_ITEMS = [{"file":"clip (1).gif","size":1055032,"sizeStr":"1.0 MB","type":"gif","dateAdded":1793391876183},{"file":"clip (1).mp4","size":1291062,"sizeStr":"1.2 MB","type":"mp4","dateAdded":1793367484000},{"file":"clip (2).gif","size":340267,"sizeStr":"332 KB","type":"gif","dateAdded":1793356099000},{"file":"clip (2).mp4","size":1060932,"sizeStr":"1.0 MB","type":"mp4","dateAdded":1793370484000},{"file":"clip (3).gif","size":352364,"sizeStr":"344 KB","type":"gif","dateAdded":1793356131000},{"file":"clip (3).mp4","size":4151873,"sizeStr":"4.0 MB","type":"mp4","dateAdded":1793370516000},{"file":"clip (4).gif","size":346072,"sizeStr":"338 KB","type":"gif","dateAdded":1793356232000},{"file":"clip (5).gif","size":442109,"sizeStr":"432 KB","type":"gif","dateAdded":1793356317000},{"file":"clip (6).gif","size":816620,"sizeStr":"797 KB","type":"gif","dateAdded":1793356378000},{"file":"clip (7).gif","size":847527,"sizeStr":"828 KB","type":"gif","dateAdded":1793356479000},{"file":"clip (8).gif","size":439981,"sizeStr":"430 KB","type":"gif","dateAdded":1793356507000},{"file":"clip (9).gif","size":186440,"sizeStr":"182 KB","type":"gif","dateAdded":1793356586000},{"file":"clip (10).gif","size":477404,"sizeStr":"466 KB","type":"gif","dateAdded":1793356687000},{"file":"clip (11).gif","size":1192087,"sizeStr":"1.1 MB","type":"gif","dateAdded":1793356863000},{"file":"clip (12).gif","size":1192087,"sizeStr":"1.1 MB","type":"gif","dateAdded":1793357118000},{"file":"clip (13).gif","size":3249889,"sizeStr":"3.1 MB","type":"gif","dateAdded":1793357169000},{"file":"clip (14).gif","size":2483238,"sizeStr":"2.4 MB","type":"gif","dateAdded":1793357227000},{"file":"clip (15).gif","size":1016020,"sizeStr":"992 KB","type":"gif","dateAdded":1793358227000},{"file":"clip (16).gif","size":2798896,"sizeStr":"2.7 MB","type":"gif","dateAdded":1793358405000},{"file":"clip (17).gif","size":2134954,"sizeStr":"2.0 MB","type":"gif","dateAdded":1793358486000},{"file":"clip (18).gif","size":1042125,"sizeStr":"1018 KB","type":"gif","dateAdded":1793358623000},{"file":"clip (19).gif","size":3654258,"sizeStr":"3.5 MB","type":"gif","dateAdded":1793358860000},{"file":"clip (20).gif","size":627265,"sizeStr":"613 KB","type":"gif","dateAdded":1793367189000},{"file":"clip (21).gif","size":500768,"sizeStr":"489 KB","type":"gif","dateAdded":1793367265000},{"file":"clip (22).gif","size":2184092,"sizeStr":"2.1 MB","type":"gif","dateAdded":1793367369000},{"file":"clip (23).gif","size":714505,"sizeStr":"698 KB","type":"gif","dateAdded":1793367440000},{"file":"clip (24).gif","size":837764,"sizeStr":"818 KB","type":"gif","dateAdded":1793367653000},{"file":"clip (25).gif","size":252841,"sizeStr":"247 KB","type":"gif","dateAdded":1793367763000},{"file":"clip (26).gif","size":1592885,"sizeStr":"1.5 MB","type":"gif","dateAdded":1793368114000},{"file":"clip (27).gif","size":316166,"sizeStr":"309 KB","type":"gif","dateAdded":1793368156000},{"file":"clip (28).gif","size":318221,"sizeStr":"311 KB","type":"gif","dateAdded":1793368190000},{"file":"clip (29).gif","size":1045758,"sizeStr":"1021 KB","type":"gif","dateAdded":1793368279000},{"file":"clip (30).gif","size":2746826,"sizeStr":"2.6 MB","type":"gif","dateAdded":1793368369000},{"file":"clip (31).gif","size":3092283,"sizeStr":"2.9 MB","type":"gif","dateAdded":1793368446000},{"file":"clip (32).gif","size":2697055,"sizeStr":"2.6 MB","type":"gif","dateAdded":1793368507000},{"file":"clip (33).gif","size":1052839,"sizeStr":"1.0 MB","type":"gif","dateAdded":1793368538000},{"file":"clip (34).gif","size":808377,"sizeStr":"789 KB","type":"gif","dateAdded":1793368588000},{"file":"clip (35).gif","size":275601,"sizeStr":"269 KB","type":"gif","dateAdded":1793368619000},{"file":"clip (36).gif","size":82314,"sizeStr":"80 KB","type":"gif","dateAdded":1793368656000},{"file":"clip (37).gif","size":1899832,"sizeStr":"1.8 MB","type":"gif","dateAdded":1793368695000},{"file":"clip (38).gif","size":1769666,"sizeStr":"1.7 MB","type":"gif","dateAdded":1793368728000},{"file":"clip (39).gif","size":1988859,"sizeStr":"1.9 MB","type":"gif","dateAdded":1793368760000},{"file":"clip (40).gif","size":1599748,"sizeStr":"1.5 MB","type":"gif","dateAdded":1793368824000},{"file":"clip (41).gif","size":1599748,"sizeStr":"1.5 MB","type":"gif","dateAdded":1793368849000},{"file":"clip (42).gif","size":2616623,"sizeStr":"2.5 MB","type":"gif","dateAdded":1793368887000},{"file":"clip (43).gif","size":1256100,"sizeStr":"1.2 MB","type":"gif","dateAdded":1793368916000},{"file":"clip (44).gif","size":2332161,"sizeStr":"2.2 MB","type":"gif","dateAdded":1793368993000},{"file":"clip (45).gif","size":1895316,"sizeStr":"1.8 MB","type":"gif","dateAdded":1793369069000},{"file":"clip (46).gif","size":1767130,"sizeStr":"1.7 MB","type":"gif","dateAdded":1793369307000},{"file":"clip (47).gif","size":1977969,"sizeStr":"1.9 MB","type":"gif","dateAdded":1793369363000},{"file":"clip (48).gif","size":1389542,"sizeStr":"1.3 MB","type":"gif","dateAdded":1793369433000},{"file":"clip (49).gif","size":1389542,"sizeStr":"1.3 MB","type":"gif","dateAdded":1793369545000},{"file":"clip (50).gif","size":2077254,"sizeStr":"2.0 MB","type":"gif","dateAdded":1793369602000},{"file":"clip (51).gif","size":4338488,"sizeStr":"4.1 MB","type":"gif","dateAdded":1793369819000},{"file":"clip (52).gif","size":2262960,"sizeStr":"2.2 MB","type":"gif","dateAdded":1793369890000},{"file":"clip (53).gif","size":610510,"sizeStr":"596 KB","type":"gif","dateAdded":1793369954000},{"file":"clip (54).gif","size":651481,"sizeStr":"636 KB","type":"gif","dateAdded":1793370006000},{"file":"clip (55).gif","size":4069777,"sizeStr":"3.9 MB","type":"gif","dateAdded":1793370098000},{"file":"clip (56).gif","size":2357027,"sizeStr":"2.2 MB","type":"gif","dateAdded":1793370142000},{"file":"clip (57).gif","size":234122,"sizeStr":"229 KB","type":"gif","dateAdded":1793370181000},{"file":"clip (58).gif","size":596456,"sizeStr":"582 KB","type":"gif","dateAdded":1793370222000},{"file":"clip (59).gif","size":294435,"sizeStr":"288 KB","type":"gif","dateAdded":1793370271000},{"file":"clip (60).gif","size":1696872,"sizeStr":"1.6 MB","type":"gif","dateAdded":1793370319000},{"file":"clip (61).gif","size":1226207,"sizeStr":"1.2 MB","type":"gif","dateAdded":1793370428000},{"file":"clip (62).gif","size":3454198,"sizeStr":"3.3 MB","type":"gif","dateAdded":1793370505000},{"file":"clip (63).gif","size":3315843,"sizeStr":"3.2 MB","type":"gif","dateAdded":1793370594000},{"file":"clip (64).gif","size":1902246,"sizeStr":"1.8 MB","type":"gif","dateAdded":1793370697000},{"file":"clip (65).gif","size":1698686,"sizeStr":"1.6 MB","type":"gif","dateAdded":1793370911000},{"file":"clip (66).gif","size":1660379,"sizeStr":"1.6 MB","type":"gif","dateAdded":1793370956000},{"file":"clip.gif","size":166674,"sizeStr":"163 KB","type":"gif","dateAdded":1793355965000},{"file":"clip.mp4","size":1007763,"sizeStr":"984 KB","type":"mp4","dateAdded":1793367444000},{"file":"piechart.gif","size":69450,"sizeStr":"68 KB","type":"gif","dateAdded":1793355892000}];
 
     // State
     let state = {
@@ -1410,7 +1415,7 @@
       filtered: [...MEDIA_ITEMS],
       activeFilter: 'all',
       searchQuery: '',
-      sortOrder: 'natural',
+      sortOrder: 'recent',
       layout: localStorage.getItem('moodboard_layout') || 'masonry',
       favorites: new Set(JSON.parse(localStorage.getItem('moodboard_favs') || '[]')),
       lightboxIndex: -1,
@@ -1538,16 +1543,32 @@
         return true;
       });
 
-      if (state.sortOrder === 'natural') {
-        state.filtered.sort((a, b) => naturalSort(a, b, false));
-      } else if (state.sortOrder === 'natural-desc') {
-        state.filtered.sort((a, b) => naturalSort(a, b, true));
+      if (state.sortOrder === 'recent') {
+        state.filtered.sort((a, b) => (b.dateAdded || 0) - (a.dateAdded || 0));
+      } else if (state.sortOrder === 'oldest') {
+        state.filtered.sort((a, b) => (a.dateAdded || 0) - (b.dateAdded || 0));
       } else if (state.sortOrder === 'size-desc') {
         state.filtered.sort((a, b) => b.size - a.size);
       } else if (state.sortOrder === 'size-asc') {
         state.filtered.sort((a, b) => a.size - b.size);
-      } else if (state.sortOrder === 'name') {
+      } else if (state.sortOrder === 'name-asc' || state.sortOrder === 'name') {
         state.filtered.sort((a, b) => a.file.localeCompare(b.file));
+      } else if (state.sortOrder === 'name-desc') {
+        state.filtered.sort((a, b) => b.file.localeCompare(a.file));
+      } else if (state.sortOrder === 'kind-gif') {
+        state.filtered.sort((a, b) => {
+          if (a.type !== b.type) return a.type === 'gif' ? -1 : 1;
+          return naturalSort(a, b, false);
+        });
+      } else if (state.sortOrder === 'kind-mp4') {
+        state.filtered.sort((a, b) => {
+          if (a.type !== b.type) return a.type === 'mp4' ? -1 : 1;
+          return naturalSort(a, b, false);
+        });
+      } else if (state.sortOrder === 'natural') {
+        state.filtered.sort((a, b) => naturalSort(a, b, false));
+      } else if (state.sortOrder === 'natural-desc') {
+        state.filtered.sort((a, b) => naturalSort(a, b, true));
       }
 
       updateGlobalStats();
@@ -1583,10 +1604,10 @@
       if (footerTotalMb) footerTotalMb.textContent = `${totalMbStr} total media`;
 
       const sortOpt1 = document.querySelector('#sortSelect option[value="natural"]');
-      if (sortOpt1) sortOpt1.textContent = `Sort: #1 → #${total}`;
+      if (sortOpt1) sortOpt1.textContent = `Sequence: #1 → #${total}`;
 
       const sortOpt2 = document.querySelector('#sortSelect option[value="natural-desc"]');
-      if (sortOpt2) sortOpt2.textContent = `Sort: #${total} → #1`;
+      if (sortOpt2) sortOpt2.textContent = `Sequence: #${total} → #1`;
     }
 
     function renderGallery() {
@@ -2004,7 +2025,7 @@
 
     async function syncDynamicManifest() {
       try {
-        const res = await fetch('media_list.json?t=' + Date.now());
+        const res = await fetch('media_list.json?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const freshItems = await res.json();
           if (Array.isArray(freshItems) && freshItems.length > 0) {

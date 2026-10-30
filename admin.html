@@ -1192,15 +1192,19 @@
     // Find next sequential clip number
     function getNextClipNumber() {
       let maxNum = 0;
-      const allFiles = [...state.existingItems.map(x => x.file), ...state.stagedFiles.map(x => x.filename)];
+      const allFiles = [
+        ...state.existingItems.map(x => x.file || ''),
+        ...state.stagedFiles.map(x => x.filename || '')
+      ];
       allFiles.forEach(f => {
-        const m = f.match(/clip\\s*\\((\\d+)\\)/i);
+        const m = f.match(/clip\s*\((\d+)\)/i);
         if (m) {
           const num = parseInt(m[1], 10);
           if (num > maxNum) maxNum = num;
         }
       });
-      return maxNum + 1;
+      if (maxNum > 0) return maxNum + 1;
+      return (state.existingItems.length || 0) + 1;
     }
 
     // Convert File to Base64
@@ -1221,7 +1225,7 @@
     // Load existing media_list.json
     async function loadExistingMedia() {
       try {
-        const res = await fetch('media_list.json?t=' + Date.now());
+        const res = await fetch('media_list.json?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           state.existingItems = await res.json();
           renderLibrary();
@@ -1270,15 +1274,29 @@
     async function handleFiles(files) {
       if (!files || files.length === 0) return;
 
+      if (state.existingItems.length === 0) {
+        await loadExistingMedia();
+      }
+
       let nextNum = getNextClipNumber();
+      const existingNames = new Set(state.existingItems.map(x => (x.file || '').toLowerCase()));
+      const stagedNames = new Set(state.stagedFiles.map(x => (x.filename || '').toLowerCase()));
 
       for (let i = 0; i < files.length; i++) {
         const f = files[i];
         const isMp4 = f.type.includes('mp4') || f.name.toLowerCase().endsWith('.mp4');
         const ext = isMp4 ? '.mp4' : '.gif';
 
-        // Auto-assign sequential name if user uploads generic name
-        let targetName = `clip (${nextNum++})${ext}`;
+        // Clean user's original filename
+        const cleanName = f.name.replace(/[^a-zA-Z0-9._() -]/g, '_');
+        const isGenericName = /^(image|untitled|download|clip|asset|file)[\s._(-]*\d*[\s._)-]*\.(gif|mp4)$/i.test(cleanName) || cleanName.toLowerCase() === 'clip' + ext;
+
+        let targetName = cleanName;
+        // If filename is generic or collides with existing/staged items, auto-assign sequential clip number
+        if (isGenericName || existingNames.has(cleanName.toLowerCase()) || stagedNames.has(cleanName.toLowerCase())) {
+          targetName = `clip (${nextNum++})${ext}`;
+        }
+        stagedNames.add(targetName.toLowerCase());
 
         const base64 = await fileToBase64(f);
         const previewUrl = URL.createObjectURL(f);
@@ -1291,7 +1309,8 @@
           size: f.size,
           sizeStr: formatBytes(f.size),
           previewUrl: previewUrl,
-          base64: base64
+          base64: base64,
+          dateAdded: Date.now()
         });
       }
 
@@ -1311,10 +1330,12 @@
 
       stagedGrid.innerHTML = state.stagedFiles.map((item, idx) => {
         const isVideo = item.type === 'mp4';
+        const isCollision = state.existingItems.some(x => (x.file || '').toLowerCase() === item.filename.toLowerCase());
         return `
-          <div class="staged-item">
+          <div class="staged-item" style="${isCollision ? 'border-color: rgba(245, 158, 11, 0.6);' : ''}">
             <div class="staged-thumb-wrap">
               <span class="staged-badge">${item.type}</span>
+              ${isCollision ? '<span class="staged-badge" style="left:8px; right:auto; background:#f59e0b; color:#000; font-weight:700;">OVERWRITE</span>' : '<span class="staged-badge" style="left:8px; right:auto; background:#10b981; color:#fff; font-weight:700;">NEW</span>'}
               <button class="staged-remove-btn" onclick="removeStaged(${idx})" title="Remove clip">✕</button>
               ${isVideo ? `
                 <video src="${item.previewUrl}" autoplay loop muted playsinline></video>
@@ -1440,7 +1461,8 @@
             filename: item.filename,
             content: item.base64,
             size: item.size,
-            sizeStr: item.sizeStr
+            sizeStr: item.sizeStr,
+            dateAdded: item.dateAdded || Date.now()
           }))
         };
 

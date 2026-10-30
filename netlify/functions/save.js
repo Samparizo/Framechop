@@ -191,7 +191,8 @@ exports.handler = async (event, context) => {
         file: file.filename,
         size: file.size || 0,
         sizeStr: file.sizeStr || '0 KB',
-        type: file.filename.toLowerCase().endsWith('.mp4') ? 'mp4' : 'gif'
+        type: file.filename.toLowerCase().endsWith('.mp4') ? 'mp4' : 'gif',
+        dateAdded: file.dateAdded || Date.now()
       });
     }
 

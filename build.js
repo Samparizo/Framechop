@@ -56,18 +56,31 @@ const mediaFiles = allFiles.filter(f => {
 mediaFiles.sort(naturalCompare);
 
 let totalBytes = 0;
-const items = mediaFiles.map(f => {
+let existingMap = new Map();
+try {
+  const oldData = JSON.parse(fs.readFileSync(path.join(__dirname, 'media_list.json'), 'utf8'));
+  if (Array.isArray(oldData)) {
+    oldData.forEach(it => { if (it.file) existingMap.set(it.file, it); });
+  }
+} catch (e) {}
+
+const items = mediaFiles.map((f, idx) => {
   const stat = fs.statSync(path.join(__dirname, f));
   totalBytes += stat.size;
   const isMb = stat.size >= 1024 * 1024;
   const sizeStr = isMb 
     ? (stat.size / (1024 * 1024)).toFixed(1) + ' MB'
     : Math.round(stat.size / 1024) + ' KB';
+  const existing = existingMap.get(f);
+  const dateAdded = (existing && existing.dateAdded)
+    ? existing.dateAdded
+    : Math.round(stat.mtimeMs || (Date.now() - (mediaFiles.length - idx) * 60000));
   return {
     file: f,
     size: stat.size,
     sizeStr: sizeStr,
-    type: path.extname(f).toLowerCase() === '.mp4' ? 'mp4' : 'gif'
+    type: path.extname(f).toLowerCase() === '.mp4' ? 'mp4' : 'gif',
+    dateAdded: dateAdded
   };
 });
 
@@ -1239,11 +1252,16 @@ const html = `<!DOCTYPE html>
 
         <!-- Sort Select -->
         <select class="sort-select" id="sortSelect" title="Sort order">
-          <option value="natural">Sort: #1 → #${items.length}</option>
-          <option value="natural-desc">Sort: #${items.length} → #1</option>
+          <option value="recent">⚡ Upload: Newest first</option>
+          <option value="oldest">Upload: Oldest first</option>
           <option value="size-desc">Size: Largest first</option>
           <option value="size-asc">Size: Smallest first</option>
-          <option value="name">Name: A to Z</option>
+          <option value="name-asc">Name: A → Z</option>
+          <option value="name-desc">Name: Z → A</option>
+          <option value="kind-gif">Kind: GIFs first</option>
+          <option value="kind-mp4">Kind: MP4s first</option>
+          <option value="natural">Sequence: #1 → #${items.length}</option>
+          <option value="natural-desc">Sequence: #${items.length} → #1</option>
         </select>
 
         <!-- Auto-Play / Stream Presentation Mode -->
@@ -1493,7 +1511,7 @@ const html = `<!DOCTYPE html>
       filtered: [...MEDIA_ITEMS],
       activeFilter: 'all',
       searchQuery: '',
-      sortOrder: 'natural',
+      sortOrder: 'recent',
       layout: localStorage.getItem('moodboard_layout') || 'masonry',
       favorites: new Set(JSON.parse(localStorage.getItem('moodboard_favs') || '[]')),
       lightboxIndex: -1,
@@ -1621,16 +1639,32 @@ const html = `<!DOCTYPE html>
         return true;
       });
 
-      if (state.sortOrder === 'natural') {
-        state.filtered.sort((a, b) => naturalSort(a, b, false));
-      } else if (state.sortOrder === 'natural-desc') {
-        state.filtered.sort((a, b) => naturalSort(a, b, true));
+      if (state.sortOrder === 'recent') {
+        state.filtered.sort((a, b) => (b.dateAdded || 0) - (a.dateAdded || 0));
+      } else if (state.sortOrder === 'oldest') {
+        state.filtered.sort((a, b) => (a.dateAdded || 0) - (b.dateAdded || 0));
       } else if (state.sortOrder === 'size-desc') {
         state.filtered.sort((a, b) => b.size - a.size);
       } else if (state.sortOrder === 'size-asc') {
         state.filtered.sort((a, b) => a.size - b.size);
-      } else if (state.sortOrder === 'name') {
+      } else if (state.sortOrder === 'name-asc' || state.sortOrder === 'name') {
         state.filtered.sort((a, b) => a.file.localeCompare(b.file));
+      } else if (state.sortOrder === 'name-desc') {
+        state.filtered.sort((a, b) => b.file.localeCompare(a.file));
+      } else if (state.sortOrder === 'kind-gif') {
+        state.filtered.sort((a, b) => {
+          if (a.type !== b.type) return a.type === 'gif' ? -1 : 1;
+          return naturalSort(a, b, false);
+        });
+      } else if (state.sortOrder === 'kind-mp4') {
+        state.filtered.sort((a, b) => {
+          if (a.type !== b.type) return a.type === 'mp4' ? -1 : 1;
+          return naturalSort(a, b, false);
+        });
+      } else if (state.sortOrder === 'natural') {
+        state.filtered.sort((a, b) => naturalSort(a, b, false));
+      } else if (state.sortOrder === 'natural-desc') {
+        state.filtered.sort((a, b) => naturalSort(a, b, true));
       }
 
       updateGlobalStats();
@@ -1666,10 +1700,10 @@ const html = `<!DOCTYPE html>
       if (footerTotalMb) footerTotalMb.textContent = \`\${totalMbStr} total media\`;
 
       const sortOpt1 = document.querySelector('#sortSelect option[value="natural"]');
-      if (sortOpt1) sortOpt1.textContent = \`Sort: #1 → #\${total}\`;
+      if (sortOpt1) sortOpt1.textContent = \`Sequence: #1 → #\${total}\`;
 
       const sortOpt2 = document.querySelector('#sortSelect option[value="natural-desc"]');
-      if (sortOpt2) sortOpt2.textContent = \`Sort: #\${total} → #1\`;
+      if (sortOpt2) sortOpt2.textContent = \`Sequence: #\${total} → #1\`;
     }
 
     function renderGallery() {
@@ -2087,7 +2121,7 @@ const html = `<!DOCTYPE html>
 
     async function syncDynamicManifest() {
       try {
-        const res = await fetch('media_list.json?t=' + Date.now());
+        const res = await fetch('media_list.json?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const freshItems = await res.json();
           if (Array.isArray(freshItems) && freshItems.length > 0) {
