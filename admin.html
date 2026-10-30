@@ -1621,7 +1621,9 @@
           hashRaw === MASTER_PASSWORD_HASH ||
           hashTrimmed === MASTER_PASSWORD_HASH ||
           hashWithNewline === MASTER_PASSWORD_HASH ||
-          hashRawWithNewline === MASTER_PASSWORD_HASH
+          hashRawWithNewline === MASTER_PASSWORD_HASH ||
+          trimmedInput === MASTER_PASSWORD_HASH ||
+          rawInput === MASTER_PASSWORD_HASH
         ) {
           hashAuthed = true;
         }
