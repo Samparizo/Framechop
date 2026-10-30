@@ -1,0 +1,19 @@
+{
+  "name": "moodboard-motion-vault",
+  "version": "1.0.0",
+  "description": "Curated visual GIF & video moodboard stream with Git-backed CMS and Netlify auto-deploy",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "start": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "moodboard",
+    "gifs",
+    "motion-design",
+    "cms",
+    "netlify"
+  ],
+  "author": "Samparizo",
+  "license": "ISC"
+}

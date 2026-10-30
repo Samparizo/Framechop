@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>CMS Studio • Moodboard Motion Vault</title>
+  <meta name="description" content="Admin CMS to upload and sync moodboard GIFs and videos directly to GitHub & Netlify without an IDE.">
+  <meta name="theme-color" content="#07080c">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #07080c;
+      --bg-panel: rgba(18, 22, 33, 0.75);
+      --bg-panel-hover: rgba(26, 32, 48, 0.9);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.6);
+      --accent-primary: #6366f1;
+      --accent-primary-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.35);
+      --accent-secondary: #ec4899;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'Space Grotesk', ui-monospace, monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+      --shadow-panel: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.06);
+      --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    body {
+      min-height: 100vh;
+      background: 
+        radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 90% 30%, rgba(236, 72, 153, 0.09) 0%, transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+        var(--bg-dark);
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Sticky Header */
+    header.cms-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(7, 8, 12, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 24px;
+    }
+
+    .header-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .cms-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .cms-logo {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .cms-logo svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .cms-title h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cms-badge {
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      background: rgba(236, 72, 153, 0.15);
+      color: #f472b6;
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+    }
+
+    .cms-title p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Header Action Controls */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .repo-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .repo-status-pill:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-amber);
+    }
+
+    .status-dot.connected {
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-outline svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    /* Main Container */
+    main.cms-container {
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Tabs */
+    .cms-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+    }
+
+    .cms-tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition-smooth);
+    }
+
+    .cms-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .cms-tab-btn.active {
+      background: var(--accent-primary);
+      color: #fff;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    /* Content Views */
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    /* Upload Card Area */
+    .dropzone-card {
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px dashed rgba(99, 102, 241, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 48px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-panel);
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .dropzone-card:hover, .dropzone-card.dragover {
+      border-color: var(--accent-primary);
+      background: rgba(26, 32, 48, 0.85);
+      transform: translateY(-2px);
+      box-shadow: 0 20px 50px -15px var(--accent-glow);
+    }
+
+    .dropzone-icon {
+      width: 68px;
+      height: 68px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: var(--accent-primary);
+    }
+
+    .dropzone-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .dropzone-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .dropzone-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 20px;
+    }
+
+    .dropzone-btn {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px var(--accent-glow);
+      transition: var(--transition-smooth);
+      pointer-events: none;
+    }
+
+    .dropzone-card:hover .dropzone-btn {
+      transform: scale(1.04);
+    }
+
+    input[type="file"]#fileInput {
+      display: none;
+    }
+
+    /* Staged Queue Panel */
+    .staged-panel {
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: var(--shadow-panel);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 16px;
+    }
+
+    .panel-header h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px var(--accent-glow);
+      transition: var(--transition-smooth);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Queue Grid */
+    .staged-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .staged-item {
+      background: rgba(10, 12, 18, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .staged-item:hover {
+      border-color: rgba(99, 102, 241, 0.35);
+      background: rgba(15, 18, 28, 0.8);
+    }
+
+    .staged-thumb-wrap {
+      width: 100%;
+      height: 180px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .staged-thumb-wrap img,
+    .staged-thumb-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .staged-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .staged-remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .staged-remove-btn:hover {
+      background: var(--accent-red);
+      border-color: var(--accent-red);
+    }
+
+    .staged-meta {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .staged-input-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .staged-filename-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .staged-filename-input:focus {
+      border-color: var(--border-focus);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .staged-item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    /* Settings Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(4, 5, 8, 0.85);
+      backdrop-filter: blur(15px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #111422;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .form-control:focus {
+      border-color: var(--border-focus);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .form-helper {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    .form-helper a {
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+
+    .form-helper a:hover {
+      text-decoration: underline;
+    }
+
+    /* Sync Progress Modal */
+    .sync-progress-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(4, 5, 8, 0.92);
+      backdrop-filter: blur(20px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .sync-progress-modal.active {
+      display: flex;
+    }
+
+    .sync-card {
+      background: #111422;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85);
+    }
+
+    .sync-spinner {
+      width: 56px;
+      height: 56px;
+      border: 4px solid rgba(99, 102, 241, 0.2);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .sync-step-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+
+    .sync-step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-dim);
+    }
+
+    .sync-step-item.active {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .sync-step-item.done {
+      color: var(--accent-emerald);
+    }
+
+    .sync-step-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Existing Clips Library Table */
+    .library-panel {
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .library-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .library-table th {
+      text-align: left;
+      padding: 12px 16px;
+      color: var(--text-dim);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .library-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+    }
+
+    .library-table tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .table-thumb {
+      width: 50px;
+      height: 50px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    /* Toast Notification */
+    .cms-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(18, 22, 33, 0.95);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(15px);
+      color: var(--text-main);
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .cms-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CMS Header -->
+  <header class="cms-header">
+    <div class="header-inner">
+      <a href="index.html" class="cms-brand" title="Return to Moodboard Stream">
+        <div class="cms-logo">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+          </svg>
+        </div>
+        <div class="cms-title">
+          <h1>MOTION VAULT <span class="cms-badge">CMS STUDIO</span></h1>
+          <p>Instant Git-backed media upload & Netlify auto-deploy</p>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <!-- Repo Status Pill / Modal trigger -->
+        <div class="repo-status-pill" id="repoStatusPill" title="Configure GitHub & Netlify Integration">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Checking Git...</span>
+        </div>
+
+        <!-- Settings Button -->
+        <button class="btn-outline" id="btnOpenSettings" title="GitHub Connection Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Git Config
+        </button>
+
+        <!-- View Live Site Link -->
+        <a href="index.html" class="btn-outline" title="Back to moodboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Live Stream
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="cms-container">
+    
+    <!-- Navigation Tabs -->
+    <div class="cms-tabs">
+      <button class="cms-tab-btn active" data-tab="uploadTab">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        Upload New Clips
+      </button>
+      <button class="cms-tab-btn" data-tab="libraryTab">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        Current Library (<span id="libraryTabCount">0</span>)
+      </button>
+    </div>
+
+    <!-- TAB 1: UPLOAD & SYNC -->
+    <div class="tab-content active" id="uploadTab">
+      
+      <!-- Drag & Drop Zone -->
+      <div class="dropzone-card" id="dropzoneCard">
+        <input type="file" id="fileInput" multiple accept="image/gif,video/mp4,video/webm,video/quicktime">
+        
+        <div class="dropzone-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+        </div>
+
+        <h3>Upload GIFs or Video Clips</h3>
+        <p>Drag and drop multiple .gif or .mp4 files here, or click to browse. Upon saving, your GitHub repository updates and triggers Netlify to rebuild your live site automatically!</p>
+        
+        <button class="dropzone-btn">Select Clips from Computer</button>
+      </div>
+
+      <!-- Staged Queue Panel (Shown when files are selected) -->
+      <div class="staged-panel" id="stagedPanel" style="display: none;">
+        <div class="panel-header">
+          <h2>
+            Staged Clips for Commit
+            <span class="cms-badge" id="stagedCountBadge">0 files</span>
+          </h2>
+
+          <div class="panel-header-actions">
+            <button class="btn-secondary" id="btnClearQueue">Clear All</button>
+            <button class="btn-primary" id="btnSaveAndPublish">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              Save & Publish to Git
+            </button>
+          </div>
+        </div>
+
+        <!-- Grid of Staged Items -->
+        <div class="staged-grid" id="stagedGrid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: CURRENT LIBRARY -->
+    <div class="tab-content" id="libraryTab">
+      <div class="library-panel">
+        <div class="panel-header">
+          <h2>Deployed Media Assets</h2>
+          <div style="font-size: 0.85rem; color: var(--text-dim);" id="libraryMetaSummary">
+            Loading...
+          </div>
+        </div>
+
+        <table class="library-table" id="libraryTable">
+          <thead>
+            <tr>
+              <th style="width: 70px;">Preview</th>
+              <th>Filename</th>
+              <th>Format</th>
+              <th>File Size</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="libraryTableBody">
+            <!-- Dynamically populated from media_list.json -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- GitHub Connection Settings Modal -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub & Netlify Setup
+        </h3>
+        <button class="btn-outline" id="btnCloseSettings" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>GitHub Owner / Username</label>
+        <input type="text" id="cfgOwner" class="form-control" placeholder="Samparizo" value="Samparizo">
+      </div>
+
+      <div class="form-group">
+        <label>GitHub Repository Name</label>
+        <input type="text" id="cfgRepo" class="form-control" placeholder="Profile-Mapping-for-AEC or Moodboard-Site">
+        <span class="form-helper">The repository hosting your Netlify site.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Target Branch</label>
+        <input type="text" id="cfgBranch" class="form-control" value="main">
+      </div>
+
+      <div class="form-group">
+        <label>GitHub Personal Access Token (Classic with <code>repo</code> scope)</label>
+        <input type="password" id="cfgToken" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+        <span class="form-helper">
+          Generate on GitHub via: <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">Settings &gt; Developer settings &gt; Personal access tokens &gt; Tokens (classic)</a> with <strong>repo</strong> permissions. Stored safely in your browser's local storage.
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Optional: Netlify Build Hook URL</label>
+        <input type="text" id="cfgBuildHook" class="form-control" placeholder="https://api.netlify.com/build_hooks/xxxxxxxx">
+        <span class="form-helper">Optional. If provided, triggers an immediate Netlify rebuild hook upon upload.</span>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+        <button class="btn-secondary" id="btnTestConnection">Test Connection</button>
+        <button class="btn-primary" id="btnSaveConfig">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Syncing / Uploading Progress Modal -->
+  <div class="sync-progress-modal" id="syncModal">
+    <div class="sync-card">
+      <div class="sync-spinner" id="syncSpinner"></div>
+      
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <h3 id="syncStatusHeading">Publishing to GitHub...</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted);" id="syncStatusSub">Committing files and updating media index</p>
+      </div>
+
+      <div class="sync-step-list" id="syncStepList">
+        <!-- Rendered live -->
+      </div>
+
+      <button class="btn-primary" id="btnSyncDone" style="display: none; width: 100%; justify-content: center;">
+        View Live Stream
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="cms-toast" id="cmsToast">
+    <span id="cmsToastMsg">Action done</span>
+  </div>
+
+  <script>
+    // State
+    let state = {
+      stagedFiles: [], // array of { fileObj, filename, type, sizeStr, previewUrl, base64 }
+      existingItems: [],
+      config: {
+        owner: localStorage.getItem('mv_gh_owner') || 'Samparizo',
+        repo: localStorage.getItem('mv_gh_repo') || 'Moodboard-Site',
+        branch: localStorage.getItem('mv_gh_branch') || 'main',
+        token: localStorage.getItem('mv_gh_token') || '',
+        buildHook: localStorage.getItem('mv_gh_buildhook') || ''
+      }
+    };
+
+    // Elements
+    const dropzoneCard = document.getElementById('dropzoneCard');
+    const fileInput = document.getElementById('fileInput');
+    const stagedPanel = document.getElementById('stagedPanel');
+    const stagedGrid = document.getElementById('stagedGrid');
+    const stagedCountBadge = document.getElementById('stagedCountBadge');
+    const btnClearQueue = document.getElementById('btnClearQueue');
+    const btnSaveAndPublish = document.getElementById('btnSaveAndPublish');
+    const cmsToast = document.getElementById('cmsToast');
+    const cmsToastMsg = document.getElementById('cmsToastMsg');
+
+    // Settings elements
+    const settingsModal = document.getElementById('settingsModal');
+    const btnOpenSettings = document.getElementById('btnOpenSettings');
+    const btnCloseSettings = document.getElementById('btnCloseSettings');
+    const repoStatusPill = document.getElementById('repoStatusPill');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const cfgOwner = document.getElementById('cfgOwner');
+    const cfgRepo = document.getElementById('cfgRepo');
+    const cfgBranch = document.getElementById('cfgBranch');
+    const cfgToken = document.getElementById('cfgToken');
+    const cfgBuildHook = document.getElementById('cfgBuildHook');
+    const btnTestConnection = document.getElementById('btnTestConnection');
+    const btnSaveConfig = document.getElementById('btnSaveConfig');
+
+    // Sync modal
+    const syncModal = document.getElementById('syncModal');
+    const syncSpinner = document.getElementById('syncSpinner');
+    const syncStatusHeading = document.getElementById('syncStatusHeading');
+    const syncStatusSub = document.getElementById('syncStatusSub');
+    const syncStepList = document.getElementById('syncStepList');
+    const btnSyncDone = document.getElementById('btnSyncDone');
+
+    // Library tab elements
+    const libraryTableBody = document.getElementById('libraryTableBody');
+    const libraryTabCount = document.getElementById('libraryTabCount');
+    const libraryMetaSummary = document.getElementById('libraryMetaSummary');
+
+    // Toast helper
+    function showToast(msg) {
+      cmsToastMsg.textContent = msg;
+      cmsToast.classList.add('show');
+      setTimeout(() => cmsToast.classList.remove('show'), 2500);
+    }
+
+    // Format bytes
+    function formatBytes(bytes) {
+      if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      return Math.round(bytes / 1024) + ' KB';
+    }
+
+    // Find next sequential clip number
+    function getNextClipNumber() {
+      let maxNum = 0;
+      const allFiles = [...state.existingItems.map(x => x.file), ...state.stagedFiles.map(x => x.filename)];
+      allFiles.forEach(f => {
+        const m = f.match(/clip\\s*\\((\\d+)\\)/i);
+        if (m) {
+          const num = parseInt(m[1], 10);
+          if (num > maxNum) maxNum = num;
+        }
+      });
+      return maxNum + 1;
+    }
+
+    // Convert File to Base64
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const res = reader.result;
+          // Strip prefix data:...;base64,
+          const base64 = res.split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Load existing media_list.json
+    async function loadExistingMedia() {
+      try {
+        const res = await fetch('media_list.json?t=' + Date.now());
+        if (res.ok) {
+          state.existingItems = await res.json();
+          renderLibrary();
+        }
+      } catch (e) {
+        console.warn('Could not load local media_list.json', e);
+      }
+    }
+
+    // Render Library Tab
+    function renderLibrary() {
+      libraryTabCount.textContent = state.existingItems.length;
+      let totalBytes = state.existingItems.reduce((acc, curr) => acc + (curr.size || 0), 0);
+      libraryMetaSummary.textContent = `${state.existingItems.length} clips • ${formatBytes(totalBytes)} total`;
+
+      libraryTableBody.innerHTML = state.existingItems.map((item, idx) => {
+        const isVideo = item.type === 'mp4';
+        const encodedSrc = encodeURIComponent(item.file);
+        return `
+          <tr>
+            <td>
+              ${isVideo ? `
+                <video src="${encodedSrc}" class="table-thumb" muted preload="metadata"></video>
+              ` : `
+                <img src="${encodedSrc}" class="table-thumb" alt="${item.file}" loading="lazy">
+              `}
+            </td>
+            <td>
+              <strong>${item.file}</strong>
+            </td>
+            <td>
+              <span class="staged-badge" style="position:static; display:inline-block;">${item.type.toUpperCase()}</span>
+            </td>
+            <td>
+              <span style="font-family: var(--font-mono); color: var(--text-dim);">${item.sizeStr || formatBytes(item.size)}</span>
+            </td>
+            <td style="text-align: right;">
+              <a href="${encodedSrc}" download="${item.file}" class="btn-outline" style="padding: 4px 10px; font-size: 0.75rem;">Download</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Handle incoming selected files
+    async function handleFiles(files) {
+      if (!files || files.length === 0) return;
+
+      let nextNum = getNextClipNumber();
+
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        const isMp4 = f.type.includes('mp4') || f.name.toLowerCase().endsWith('.mp4');
+        const ext = isMp4 ? '.mp4' : '.gif';
+
+        // Auto-assign sequential name if user uploads generic name
+        let targetName = `clip (${nextNum++})${ext}`;
+
+        const base64 = await fileToBase64(f);
+        const previewUrl = URL.createObjectURL(f);
+
+        state.stagedFiles.push({
+          fileObj: f,
+          filename: targetName,
+          origName: f.name,
+          type: isMp4 ? 'mp4' : 'gif',
+          size: f.size,
+          sizeStr: formatBytes(f.size),
+          previewUrl: previewUrl,
+          base64: base64
+        });
+      }
+
+      renderStagedQueue();
+      showToast(`${files.length} clip(s) staged for commit`);
+    }
+
+    // Render Staged Queue
+    function renderStagedQueue() {
+      if (state.stagedFiles.length === 0) {
+        stagedPanel.style.display = 'none';
+        return;
+      }
+
+      stagedPanel.style.display = 'flex';
+      stagedCountBadge.textContent = `${state.stagedFiles.length} file(s)`;
+
+      stagedGrid.innerHTML = state.stagedFiles.map((item, idx) => {
+        const isVideo = item.type === 'mp4';
+        return `
+          <div class="staged-item">
+            <div class="staged-thumb-wrap">
+              <span class="staged-badge">${item.type}</span>
+              <button class="staged-remove-btn" onclick="removeStaged(${idx})" title="Remove clip">✕</button>
+              ${isVideo ? `
+                <video src="${item.previewUrl}" autoplay loop muted playsinline></video>
+              ` : `
+                <img src="${item.previewUrl}" alt="preview">
+              `}
+            </div>
+
+            <div class="staged-meta">
+              <div class="staged-input-label">Target Filename in Git:</div>
+              <input 
+                type="text" 
+                class="staged-filename-input" 
+                value="${item.filename}" 
+                onchange="updateStagedName(${idx}, this.value)"
+              >
+              <div class="staged-item-footer">
+                <span>Original: ${item.origName}</span>
+                <span>${item.sizeStr}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Remove item from staged queue
+    window.removeStaged = function(idx) {
+      if (idx >= 0 && idx < state.stagedFiles.length) {
+        URL.revokeObjectURL(state.stagedFiles[idx].previewUrl);
+        state.stagedFiles.splice(idx, 1);
+        renderStagedQueue();
+      }
+    };
+
+    // Update target filename
+    window.updateStagedName = function(idx, newName) {
+      if (idx >= 0 && idx < state.stagedFiles.length) {
+        state.stagedFiles[idx].filename = newName.trim();
+      }
+    };
+
+    // Clear entire queue
+    btnClearQueue.addEventListener('click', () => {
+      state.stagedFiles.forEach(item => URL.revokeObjectURL(item.previewUrl));
+      state.stagedFiles = [];
+      renderStagedQueue();
+      showToast('Queue cleared');
+    });
+
+    // Dropzone triggers
+    dropzoneCard.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzoneCard.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzoneCard.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(name => {
+      dropzoneCard.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzoneCard.classList.remove('dragover');
+      });
+    });
+
+    dropzoneCard.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      if (dt && dt.files) {
+        handleFiles(dt.files);
+      }
+    });
+
+    // Tabs switching
+    document.querySelectorAll('.cms-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cms-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Check Git connection status
+    async function checkGitStatus() {
+      cfgOwner.value = state.config.owner;
+      cfgRepo.value = state.config.repo;
+      cfgBranch.value = state.config.branch;
+      cfgToken.value = state.config.token;
+      cfgBuildHook.value = state.config.buildHook;
+
+      if (!state.config.token) {
+        statusDot.className = 'status-dot';
+        statusText.textContent = 'Setup Git Token';
+        return false;
+      }
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${state.config.owner}/${state.config.repo}`, {
+          headers: {
+            'Authorization': `token ${state.config.token}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+
+        if (res.ok) {
+          const repo = await res.json();
+          statusDot.className = 'status-dot connected';
+          statusText.textContent = `${state.config.owner}/${state.config.repo}`;
+          return true;
+        } else {
+          statusDot.className = 'status-dot';
+          statusText.textContent = 'Auth Failed';
+          return false;
+        }
+      } catch (err) {
+        statusDot.className = 'status-dot';
+        statusText.textContent = 'Offline / Error';
+        return false;
+      }
+    }
+
+    // Settings Modal
+    btnOpenSettings.addEventListener('click', () => settingsModal.classList.add('active'));
+    repoStatusPill.addEventListener('click', () => settingsModal.classList.add('active'));
+    btnCloseSettings.addEventListener('click', () => settingsModal.classList.remove('active'));
+
+    btnSaveConfig.addEventListener('click', () => {
+      state.config.owner = cfgOwner.value.trim();
+      state.config.repo = cfgRepo.value.trim();
+      state.config.branch = cfgBranch.value.trim() || 'main';
+      state.config.token = cfgToken.value.trim();
+      state.config.buildHook = cfgBuildHook.value.trim();
+
+      localStorage.setItem('mv_gh_owner', state.config.owner);
+      localStorage.setItem('mv_gh_repo', state.config.repo);
+      localStorage.setItem('mv_gh_branch', state.config.branch);
+      localStorage.setItem('mv_gh_token', state.config.token);
+      localStorage.setItem('mv_gh_buildhook', state.config.buildHook);
+
+      settingsModal.classList.remove('active');
+      showToast('Settings saved');
+      checkGitStatus();
+    });
+
+    btnTestConnection.addEventListener('click', async () => {
+      btnTestConnection.textContent = 'Testing...';
+      const ok = await checkGitStatus();
+      btnTestConnection.textContent = ok ? '✓ Connected!' : '✕ Failed';
+      setTimeout(() => btnTestConnection.textContent = 'Test Connection', 2000);
+    });
+
+    // SAVE & PUBLISH TO GITHUB PIPELINE
+    btnSaveAndPublish.addEventListener('click', async () => {
+      if (state.stagedFiles.length === 0) return;
+
+      if (!state.config.token) {
+        settingsModal.classList.add('active');
+        showToast('Please enter your GitHub Token first');
+        return;
+      }
+
+      // Open Progress Modal
+      syncModal.classList.add('active');
+      syncSpinner.style.display = 'block';
+      btnSyncDone.style.display = 'none';
+      syncStatusHeading.textContent = 'Publishing to GitHub...';
+      syncStatusSub.textContent = `Pushing ${state.stagedFiles.length} file(s) to ${state.config.owner}/${state.config.repo}`;
+      syncStepList.innerHTML = '';
+
+      function addStep(msg, status = 'active') {
+        const item = document.createElement('div');
+        item.className = `sync-step-item ${status}`;
+        item.innerHTML = `
+          <div class="sync-step-icon">
+            ${status === 'done' ? '✓' : status === 'error' ? '✕' : '●'}
+          </div>
+          <span>${msg}</span>
+        `;
+        syncStepList.appendChild(item);
+        return item;
+      }
+
+      try {
+        const owner = state.config.owner;
+        const repo = state.config.repo;
+        const branch = state.config.branch || 'main';
+        const token = state.config.token;
+
+        // Step 1: Upload each staged media file
+        for (let i = 0; i < state.stagedFiles.length; i++) {
+          const item = state.stagedFiles[i];
+          const stepEl = addStep(`Uploading ${item.filename} (${item.sizeStr})...`, 'active');
+
+          // Check if file already exists on GitHub to obtain its SHA if updating
+          let existingSha = null;
+          try {
+            const checkRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(item.filename)}?ref=${branch}`, {
+              headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+              }
+            });
+            if (checkRes.ok) {
+              const fileData = await checkRes.json();
+              existingSha = fileData.sha;
+            }
+          } catch(e) {}
+
+          // Commit file to GitHub
+          const putBody = {
+            message: `CMS: Add visual asset ${item.filename}`,
+            content: item.base64,
+            branch: branch
+          };
+          if (existingSha) putBody.sha = existingSha;
+
+          const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(item.filename)}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${token}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.v3+json'
+            },
+            body: JSON.stringify(putBody)
+          });
+
+          if (!putRes.ok) {
+            const err = await putRes.text();
+            stepEl.className = 'sync-step-item error';
+            stepEl.innerHTML = `<div class="sync-step-icon">✕</div><span>Failed to upload ${item.filename}: ${err}</span>`;
+            throw new Error(`Upload error: ${err}`);
+          }
+
+          stepEl.className = 'sync-step-item done';
+          stepEl.innerHTML = `<div class="sync-step-icon">✓</div><span>Committed ${item.filename}</span>`;
+        }
+
+        // Step 2: Fetch and update media_list.json on GitHub
+        const listStep = addStep('Updating media_list.json in repository...', 'active');
+        let currentSha = null;
+        let currentList = [];
+
+        try {
+          const getListRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/media_list.json?ref=${branch}`, {
+            headers: {
+              'Authorization': `token ${token}`,
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          });
+          if (getListRes.ok) {
+            const listData = await getListRes.json();
+            currentSha = listData.sha;
+            const decoded = atob(listData.content.replace(/\\n/g, ''));
+            currentList = JSON.parse(decoded);
+          }
+        } catch(e) {
+          currentList = [...state.existingItems];
+        }
+
+        // Add newly uploaded items to current list
+        state.stagedFiles.forEach(item => {
+          // Remove if duplicate exists
+          currentList = currentList.filter(x => x.file !== item.filename);
+          currentList.push({
+            file: item.filename,
+            size: item.size,
+            sizeStr: item.sizeStr,
+            type: item.type
+          });
+        });
+
+        // Natural sort the list
+        currentList.sort((a, b) => {
+          const regex = /(\\d+)/;
+          const aParts = a.file.split(regex);
+          const bParts = b.file.split(regex);
+          for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+            const aPart = aParts[i] || '';
+            const bPart = bParts[i] || '';
+            const aNum = parseInt(aPart, 10);
+            const bNum = parseInt(bPart, 10);
+            if (!isNaN(aNum) && !isNaN(bNum)) {
+              if (aNum !== bNum) return aNum - bNum;
+            } else {
+              const cmp = aPart.localeCompare(bPart);
+              if (cmp !== 0) return cmp;
+            }
+          }
+          return 0;
+        });
+
+        const updatedJsonStr = JSON.stringify(currentList, null, 2);
+        const encodedJson = btoa(unescape(encodeURIComponent(updatedJsonStr)));
+
+        const putListRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/media_list.json`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/vnd.github.v3+json'
+          },
+          body: JSON.stringify({
+            message: `CMS: Update media_list.json with ${state.stagedFiles.length} new clip(s)`,
+            content: encodedJson,
+            sha: currentSha || undefined,
+            branch: branch
+          })
+        });
+
+        if (!putListRes.ok) {
+          listStep.className = 'sync-step-item error';
+          listStep.innerHTML = `<div class="sync-step-icon">✕</div><span>Failed to update media_list.json</span>`;
+        } else {
+          listStep.className = 'sync-step-item done';
+          listStep.innerHTML = `<div class="sync-step-icon">✓</div><span>Updated media_list.json (${currentList.length} total clips)</span>`;
+        }
+
+        // Step 3: Trigger Netlify Build Hook (if provided)
+        if (state.config.buildHook) {
+          const hookStep = addStep('Triggering Netlify deployment hook...', 'active');
+          try {
+            await fetch(state.config.buildHook, { method: 'POST' });
+            hookStep.className = 'sync-step-item done';
+            hookStep.innerHTML = `<div class="sync-step-icon">✓</div><span>Netlify deployment triggered!</span>`;
+          } catch(e) {
+            hookStep.className = 'sync-step-item done';
+            hookStep.innerHTML = `<div class="sync-step-icon">✓</div><span>GitHub commit will trigger Netlify auto-deploy</span>`;
+          }
+        } else {
+          addStep('Netlify is automatically rebuilding from Git commit', 'done');
+        }
+
+        // Complete Success
+        syncSpinner.style.display = 'none';
+        syncStatusHeading.textContent = '🎉 Published Successfully!';
+        syncStatusSub.textContent = 'Your repository has been updated. Netlify is deploying your updated visual moodboard!';
+        btnSyncDone.style.display = 'inline-flex';
+
+        btnSyncDone.onclick = () => {
+          syncModal.classList.remove('active');
+          window.location.href = 'index.html';
+        };
+
+        // Clear staged items
+        state.stagedFiles = [];
+        renderStagedQueue();
+        loadExistingMedia();
+
+      } catch (err) {
+        syncSpinner.style.display = 'none';
+        syncStatusHeading.textContent = 'Upload Failed';
+        syncStatusSub.textContent = err.message || 'Error communicating with GitHub';
+        btnSyncDone.style.display = 'inline-flex';
+        btnSyncDone.textContent = 'Close';
+        btnSyncDone.onclick = () => syncModal.classList.remove('active');
+      }
+    });
+
+    // Initialize
+    loadExistingMedia();
+    checkGitStatus();
+  </script>
+</body>
+</html>
