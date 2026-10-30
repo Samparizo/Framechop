@@ -62,8 +62,8 @@ exports.handler = async (event, context) => {
   }
 
   // ─── Authenticate ───
-  const providedPassword = event.headers['x-admin-password'] || '';
-  if (providedPassword !== ADMIN_PASSWORD) {
+  const providedPassword = (event.headers['x-admin-password'] || '').trim();
+  if (providedPassword !== ADMIN_PASSWORD.trim()) {
     return {
       statusCode: 401,
       body: JSON.stringify({ error: 'Unauthorized: Invalid admin password.' })

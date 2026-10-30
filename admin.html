@@ -1582,11 +1582,23 @@
       if (updateLockoutUI()) return;
 
       const rawInput = pwdInput.value;
-      const hashedInput = await sha256Hex(rawInput);
+      const trimmedInput = rawInput.trim();
 
-      if (hashedInput === MASTER_PASSWORD_HASH) {
+      const hashRaw = await sha256Hex(rawInput);
+      const hashTrimmed = await sha256Hex(trimmedInput);
+      const hashWithNewline = await sha256Hex(trimmedInput + '\n');
+      const hashRawWithNewline = await sha256Hex(rawInput + '\n');
+
+      const isMatch = (
+        hashRaw === MASTER_PASSWORD_HASH ||
+        hashTrimmed === MASTER_PASSWORD_HASH ||
+        hashWithNewline === MASTER_PASSWORD_HASH ||
+        hashRawWithNewline === MASTER_PASSWORD_HASH
+      );
+
+      if (isMatch) {
         sessionStorage.setItem('mv_admin_authed', 'true');
-        sessionStorage.setItem('mv_admin_pwd', rawInput);
+        sessionStorage.setItem('mv_admin_pwd', trimmedInput);
         sessionStorage.removeItem('mv_lock_fails');
         sessionStorage.removeItem('mv_lockout_until');
         errorMsg.textContent = '';
