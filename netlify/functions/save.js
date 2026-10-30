@@ -1,89 +1,244 @@
-// Netlify Serverless Function: Save & Commit to GitHub (AEC Profile Mapping Architecture)
+// Netlify Serverless Function: Secure Git Proxy for Moodboard CMS
+// All credentials live in Netlify Environment Variables — never in client code.
+
+// ─── Rate Limiting (in-memory, resets on cold start) ───
+const rateLimitMap = new Map(); // ip -> { count, resetAt }
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) {
+    return true;
+  }
+  return false;
+}
+
+// ─── Hardcoded Repo Identity ───
+const REPO_OWNER = 'Samparizo';
+const REPO_NAME = 'Framechop';
+const REPO_BRANCH = 'main';
+
 exports.handler = async (event, context) => {
+  // Only accept POST
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
-  const tokenGH = process.env.GITHUB_TOKEN;
-  const owner = process.env.GITHUB_OWNER || 'Samparizo';
-  const repo = process.env.GITHUB_REPO || 'Moodboard-Site';
-  const branch = process.env.GITHUB_BRANCH || 'main';
+  // ─── Load Environment Variables ───
+  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+  const BUILD_HOOK = process.env.NETLIFY_BUILD_HOOK || '';
 
-  const expectedPassword = process.env.ADMIN_PASSWORD || 'Aryan@97';
-  let payload = {};
-  try {
-    payload = JSON.parse(event.body || '{}');
-  } catch (e) {}
-
-  const providedPassword = event.headers['x-admin-password'] || payload.password;
-  if (providedPassword && providedPassword !== expectedPassword) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ error: 'Unauthorized: Invalid Admin Password.' })
-    };
-  }
-
-  if (!tokenGH) {
+  // Refuse to operate without required env vars
+  if (!GITHUB_TOKEN) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'GITHUB_TOKEN is not configured in Netlify Environment Variables.' })
+      body: JSON.stringify({ error: 'Server misconfigured: GITHUB_TOKEN is not set in Netlify environment variables.' })
+    };
+  }
+  if (!ADMIN_PASSWORD) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Server misconfigured: ADMIN_PASSWORD is not set in Netlify environment variables.' })
     };
   }
 
-  try {
-    const payload = JSON.parse(event.body);
-    const { filename, content, isJson } = payload;
+  // ─── Rate Limiting by IP ───
+  const clientIp = event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown';
+  if (isRateLimited(clientIp)) {
+    return {
+      statusCode: 429,
+      body: JSON.stringify({ error: 'Too many requests. Try again in 15 minutes.' })
+    };
+  }
 
-    if (!filename || !content) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Missing filename or content.' }) };
+  // ─── Authenticate ───
+  const providedPassword = event.headers['x-admin-password'] || '';
+  if (providedPassword !== ADMIN_PASSWORD) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Unauthorized: Invalid admin password.' })
+    };
+  }
+
+  // ─── Parse Request Body ───
+  let payload;
+  try {
+    payload = JSON.parse(event.body || '{}');
+  } catch (e) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON body.' }) };
+  }
+
+  const { files } = payload; // Array of { filename, content (base64) }
+
+  if (!files || !Array.isArray(files) || files.length === 0) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'No files provided. Expected { files: [{ filename, content }] }' }) };
+  }
+
+  // ─── GitHub API Helpers ───
+  const ghHeaders = {
+    'Authorization': `token ${GITHUB_TOKEN}`,
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'Moodboard-CMS-Netlify-Function'
+  };
+
+  async function getFileSha(filepath) {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodeURIComponent(filepath)}?ref=${REPO_BRANCH}`,
+        { headers: ghHeaders }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        return data.sha;
+      }
+    } catch (e) { /* File doesn't exist yet */ }
+    return null;
+  }
+
+  async function commitFile(filepath, base64Content, commitMessage) {
+    const sha = await getFileSha(filepath);
+    const body = {
+      message: commitMessage,
+      content: base64Content,
+      branch: REPO_BRANCH
+    };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodeURIComponent(filepath)}`,
+      { method: 'PUT', headers: ghHeaders, body: JSON.stringify(body) }
+    );
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`GitHub commit failed for ${filepath}: ${errText}`);
     }
 
-    // 1. Fetch current file SHA if exists
-    let currentSha = undefined;
+    return await res.json();
+  }
+
+  // ─── Execute Batch Upload ───
+  try {
+    const results = [];
+
+    // 1. Commit each media file
+    for (const file of files) {
+      if (!file.filename || !file.content) {
+        results.push({ filename: file.filename || 'unknown', status: 'skipped', error: 'Missing filename or content' });
+        continue;
+      }
+
+      await commitFile(file.filename, file.content, `CMS: Add visual asset ${file.filename}`);
+      results.push({ filename: file.filename, status: 'committed' });
+    }
+
+    // 2. Fetch current media_list.json and merge new items
+    let currentList = [];
+    let listSha = null;
+
     try {
-      const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(filename)}?ref=${branch}`, {
-        headers: {
-          'Authorization': `token ${tokenGH}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'Netlify-CMS-Agent'
-        }
-      });
-      if (getRes.ok) {
-        const fileData = await getRes.json();
-        currentSha = fileData.sha;
+      const getListRes = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/media_list.json?ref=${REPO_BRANCH}`,
+        { headers: ghHeaders }
+      );
+      if (getListRes.ok) {
+        const listData = await getListRes.json();
+        listSha = listData.sha;
+        const decoded = Buffer.from(listData.content, 'base64').toString('utf-8');
+        currentList = JSON.parse(decoded);
       }
     } catch (e) {
-      // New file
+      currentList = [];
     }
 
-    // 2. Put file to GitHub
-    const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(filename)}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `token ${tokenGH}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'Netlify-CMS-Agent'
-      },
-      body: JSON.stringify({
-        message: `CMS: Upload ${filename} via Netlify function`,
-        content: content,
-        sha: currentSha,
-        branch: branch
-      })
+    // Add new files to the list
+    for (const file of files) {
+      if (!file.filename) continue;
+      // Remove duplicate if exists
+      currentList = currentList.filter(x => x.file !== file.filename);
+      currentList.push({
+        file: file.filename,
+        size: file.size || 0,
+        sizeStr: file.sizeStr || '0 KB',
+        type: file.filename.toLowerCase().endsWith('.mp4') ? 'mp4' : 'gif'
+      });
+    }
+
+    // Natural sort
+    currentList.sort((a, b) => {
+      const regex = /(\d+)/;
+      const aParts = a.file.split(regex);
+      const bParts = b.file.split(regex);
+      for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+        const aPart = aParts[i] || '';
+        const bPart = bParts[i] || '';
+        const aNum = parseInt(aPart, 10);
+        const bNum = parseInt(bPart, 10);
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          if (aNum !== bNum) return aNum - bNum;
+        } else {
+          const cmp = aPart.localeCompare(bPart);
+          if (cmp !== 0) return cmp;
+        }
+      }
+      return 0;
     });
 
-    if (!putRes.ok) {
-      const errText = await putRes.text();
-      return { statusCode: putRes.status, body: JSON.stringify({ error: errText }) };
+    // Commit updated media_list.json
+    const updatedJson = JSON.stringify(currentList, null, 2);
+    const encodedJson = Buffer.from(updatedJson).toString('base64');
+
+    const listBody = {
+      message: `CMS: Update media_list.json with ${files.length} new clip(s)`,
+      content: encodedJson,
+      branch: REPO_BRANCH
+    };
+    if (listSha) listBody.sha = listSha;
+
+    const putListRes = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/media_list.json`,
+      { method: 'PUT', headers: ghHeaders, body: JSON.stringify(listBody) }
+    );
+
+    if (!putListRes.ok) {
+      const errText = await putListRes.text();
+      throw new Error(`Failed to update media_list.json: ${errText}`);
     }
 
-    const resData = await putRes.json();
+    // 3. Trigger Netlify Build Hook
+    let buildTriggered = false;
+    if (BUILD_HOOK) {
+      try {
+        await fetch(BUILD_HOOK, { method: 'POST' });
+        buildTriggered = true;
+      } catch (e) {
+        // Build hook failed, but commit succeeded — Netlify's GitHub webhook will rebuild anyway
+      }
+    }
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success: true, commit: resData.commit })
+      body: JSON.stringify({
+        success: true,
+        filesCommitted: results.length,
+        totalClips: currentList.length,
+        buildTriggered,
+        results
+      })
     };
+
   } catch (err) {
     return {
       statusCode: 500,

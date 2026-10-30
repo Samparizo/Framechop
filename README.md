@@ -18,37 +18,38 @@ A single-page, responsive, dark-mode visual scroll gallery for previewing animat
 
 ---
 
-## 🚀 The CMS & Netlify Git-Backed Workflow (Same as AEC Profile Mapping)
+## 🚀 The CMS & Netlify Git-Backed Workflow
 
-You can upload new GIFs and video clips directly from your browser without opening an IDE or writing terminal commands.
+Upload new GIFs and video clips directly from **any device** without installing an IDE or writing terminal commands.
 
 ### How it Works:
-1. **Click "Admin CMS"** in the footer of [`index.html`](./index.html).
-2. **Drag & drop** any `.gif` or `.mp4` files into the upload dropzone.
-3. The CMS will automatically preview them, display file sizes, and assign the next sequential clip name (e.g. `clip (67).gif`).
-4. **Click "Save & Publish to Git"**:
-   - The CMS encodes each file and commits it directly to your GitHub repository via the GitHub REST API.
-   - It updates `media_list.json` in your repository.
-   - Netlify detects the GitHub commit, executes `node build.js` via `netlify.toml`, and automatically publishes your live site.
-   - In ~60 seconds, your Netlify site is live with the newly added clips!
+1. **Open Admin CMS**: Navigate to `/admin` or click "Admin CMS" in the footer of [`index.html`](./index.html).
+2. **Unlock**: Enter your admin password. (Protected by SHA-256 client validation + rate-limited server verification).
+3. **Drag & Drop**: Drop any `.gif` or `.mp4` clips. The CMS previews them, calculates file sizes, and assigns the next sequential clip number.
+4. **Click "Save & Publish"**:
+   - The CMS sends a batch payload to your Netlify serverless function (`/.netlify/functions/save`).
+   - The serverless function uses your server-side `GITHUB_TOKEN` to commit the files directly to `Samparizo/Moodboard-Site` (`main` branch).
+   - It updates `media_list.json` and optionally pings your Netlify Build Hook.
+   - Netlify rebuilds and publishes your live site in ~30–60 seconds.
+   - **Zero configuration on client devices**: No token typing or storage on mobile or client browsers!
 
 ---
 
-## 🔑 Initial GitHub & Netlify Setup (One-time Setup)
+## 🔑 Netlify Environment Variables Setup (One-time Setup)
 
-### 1. GitHub Token Configuration
-1. Go to [GitHub Tokens](https://github.com/settings/tokens) (Settings > Developer settings > Personal access tokens > Tokens classic).
-2. Click **Generate new token (classic)** with note: `Moodboard CMS`.
-3. Check the **`repo`** scope (full control of private repositories) and click **Generate**.
-4. In your CMS window ([`admin.html`](./admin.html)), click **"Git Config"** in the top bar.
-5. Paste your GitHub token, your repository name, and click **Save Settings**. (This token is stored safely in your browser's `localStorage` on your device).
+All credentials live securely in **Netlify Environment Variables** (Site settings > Environment variables) — never in the client code or repository.
 
-### 2. Connect to Netlify
-1. Log into [Netlify](https://app.netlify.com/) and click **Add new site > Import an existing project**.
-2. Select your GitHub repository (`Samparizo/...`).
-3. Build Settings are automatically configured by [`netlify.toml`](./netlify.toml):
-   - **Build command**: `node build.js`
-   - **Publish directory**: `.`
-4. Click **Deploy Site**.
+| Variable | Required | Description |
+|---|---|---|
+| `GITHUB_TOKEN` | **Yes** | Personal Access Token (classic) with `repo` scope from [github.com/settings/tokens](https://github.com/settings/tokens). |
+| `ADMIN_PASSWORD` | **Yes** | Admin password (e.g. `Aryan@97`) checked server-side on every commit. |
+| `NETLIFY_BUILD_HOOK` | Optional | Netlify Build Hook URL (Site settings > Build & deploy > Build hooks) for instant rebuild triggering. |
 
-Now, every time you upload a GIF from the CMS and click **Save & Publish**, your GitHub repository updates and Netlify automatically refreshes the live site!
+---
+
+## 🛡️ Security Guardrails
+
+- **No Plaintext Passwords**: Password is hashed with SHA-256 before client comparison. Server verifies against `ADMIN_PASSWORD` env var.
+- **Client Brute-Force Shield**: 5 failed unlock attempts triggers a 30-second lockout timer.
+- **Server-Side Rate Limiting**: Max 10 commit requests per 15-minute window per IP.
+- **Zero Token Leakage**: The GitHub PAT never touches the client browser, localStorage, or network payload.

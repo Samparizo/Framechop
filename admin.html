@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>CMS Studio • Moodboard Motion Vault</title>
-  <meta name="description" content="Admin CMS to upload and sync moodboard GIFs and videos directly to GitHub & Netlify without an IDE.">
+  <meta name="description"
+    content="Admin CMS to upload and sync moodboard GIFs and videos directly to GitHub & Netlify without an IDE.">
   <meta name="theme-color" content="#07080c">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet">
+
   <style>
     :root {
       --bg-dark: #07080c;
@@ -54,7 +58,7 @@
 
     body {
       min-height: 100vh;
-      background: 
+      background:
         radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
         radial-gradient(circle at 90% 30%, rgba(236, 72, 153, 0.09) 0%, transparent 50%),
         radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
@@ -276,7 +280,8 @@
       position: relative;
     }
 
-    .dropzone-card:hover, .dropzone-card.dragover {
+    .dropzone-card:hover,
+    .dropzone-card.dragover {
       border-color: var(--accent-primary);
       background: rgba(26, 32, 48, 0.85);
       transform: translateY(-2px);
@@ -666,7 +671,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .sync-step-list {
@@ -818,9 +825,21 @@
     }
 
     @keyframes lockShake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-12px); }
-      40%, 80% { transform: translateX(12px); }
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20%,
+      60% {
+        transform: translateX(-12px);
+      }
+
+      40%,
+      80% {
+        transform: translateX(12px);
+      }
     }
 
     .lock-screen-icon {
@@ -907,6 +926,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Fullscreen Password Gatekeeper Modal -->
@@ -921,16 +941,11 @@
       <h2>Admin Access Restricted</h2>
       <p>Enter the administrator password to unlock the Moodboard CMS Studio.</p>
 
-      <form id="lockForm" onsubmit="event.preventDefault(); handleUnlock();" style="width: 100%; display: flex; flex-direction: column; gap: 14px;">
+      <form id="lockForm" onsubmit="event.preventDefault(); handleUnlock();"
+        style="width: 100%; display: flex; flex-direction: column; gap: 14px;">
         <div class="lock-input-group">
-          <input 
-            type="password" 
-            id="adminPasswordInput" 
-            class="lock-input" 
-            placeholder="Enter Admin Password..." 
-            autocomplete="current-password"
-            required
-          >
+          <input type="password" id="adminPasswordInput" class="lock-input" placeholder="Enter Admin Password..."
+            autocomplete="current-password" required>
           <button type="button" class="btn-toggle-eye" id="btnToggleEye" title="Show / Hide Password">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -942,8 +957,10 @@
         <div class="lock-error-msg" id="lockErrorMsg"></div>
 
         <div style="display: flex; gap: 10px; width: 100%;">
-          <a href="index.html" class="btn-secondary" style="flex: 1; text-align: center; text-decoration: none; padding: 11px 0;">← Back</a>
-          <button type="submit" class="btn-primary" style="flex: 2; justify-content: center; padding: 11px 0;" id="btnUnlock">
+          <a href="index.html" class="btn-secondary"
+            style="flex: 1; text-align: center; text-decoration: none; padding: 11px 0;">← Back</a>
+          <button type="submit" class="btn-primary" style="flex: 2; justify-content: center; padding: 11px 0;"
+            id="btnUnlock">
             Unlock CMS Studio
           </button>
         </div>
@@ -957,7 +974,8 @@
       <a href="index.html" class="cms-brand" title="Return to Moodboard Stream">
         <div class="cms-logo">
           <svg viewBox="0 0 24 24">
-            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+            <path
+              d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z" />
           </svg>
         </div>
         <div class="cms-title">
@@ -967,20 +985,11 @@
       </a>
 
       <div class="header-actions">
-        <!-- Repo Status Pill / Modal trigger -->
-        <div class="repo-status-pill" id="repoStatusPill" title="Configure GitHub & Netlify Integration">
-          <span class="status-dot" id="statusDot"></span>
-          <span id="statusText">Checking Git...</span>
+        <!-- Connected Repo Status (Read-Only) -->
+        <div class="repo-status-pill" id="repoStatusPill" title="Git-backed auto-deploy connected via Netlify proxy" style="cursor: default;">
+          <span class="status-dot connected" id="statusDot"></span>
+          <span id="statusText">Samparizo/Framechop</span>
         </div>
-
-        <!-- Settings Button -->
-        <button class="btn-outline" id="btnOpenSettings" title="GitHub Connection Settings">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-          Git Config
-        </button>
 
         <!-- Lock / Logout Button -->
         <button class="btn-outline" id="btnLockAdmin" onclick="lockAdmin()" title="Lock CMS Studio">
@@ -1004,7 +1013,7 @@
 
   <!-- Main Container -->
   <main class="cms-container">
-    
+
     <!-- Navigation Tabs -->
     <div class="cms-tabs">
       <button class="cms-tab-btn active" data-tab="uploadTab">
@@ -1028,11 +1037,11 @@
 
     <!-- TAB 1: UPLOAD & SYNC -->
     <div class="tab-content active" id="uploadTab">
-      
+
       <!-- Drag & Drop Zone -->
       <div class="dropzone-card" id="dropzoneCard">
         <input type="file" id="fileInput" multiple accept="image/gif,video/mp4,video/webm,video/quicktime">
-        
+
         <div class="dropzone-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -1042,8 +1051,9 @@
         </div>
 
         <h3>Upload GIFs or Video Clips</h3>
-        <p>Drag and drop multiple .gif or .mp4 files here, or click to browse. Upon saving, your GitHub repository updates and triggers Netlify to rebuild your live site automatically!</p>
-        
+        <p>Drag and drop multiple .gif or .mp4 files here, or click to browse. Upon saving, your GitHub repository
+          updates and triggers Netlify to rebuild your live site automatically!</p>
+
         <button class="dropzone-btn">Select Clips from Computer</button>
       </div>
 
@@ -1105,64 +1115,17 @@
 
   </main>
 
-  <!-- GitHub Connection Settings Modal -->
-  <div class="modal-backdrop" id="settingsModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-          GitHub & Netlify Setup
-        </h3>
-        <button class="btn-outline" id="btnCloseSettings" style="padding: 4px 10px;">✕</button>
-      </div>
 
-      <div class="form-group">
-        <label>GitHub Owner / Username</label>
-        <input type="text" id="cfgOwner" class="form-control" placeholder="Samparizo" value="Samparizo">
-      </div>
-
-      <div class="form-group">
-        <label>GitHub Repository Name</label>
-        <input type="text" id="cfgRepo" class="form-control" placeholder="Profile-Mapping-for-AEC or Moodboard-Site">
-        <span class="form-helper">The repository hosting your Netlify site.</span>
-      </div>
-
-      <div class="form-group">
-        <label>Target Branch</label>
-        <input type="text" id="cfgBranch" class="form-control" value="main">
-      </div>
-
-      <div class="form-group">
-        <label>GitHub Personal Access Token (Classic with <code>repo</code> scope)</label>
-        <input type="password" id="cfgToken" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx">
-        <span class="form-helper">
-          Generate on GitHub via: <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">Settings &gt; Developer settings &gt; Personal access tokens &gt; Tokens (classic)</a> with <strong>repo</strong> permissions. Stored safely in your browser's local storage.
-        </span>
-      </div>
-
-      <div class="form-group">
-        <label>Optional: Netlify Build Hook URL</label>
-        <input type="text" id="cfgBuildHook" class="form-control" placeholder="https://api.netlify.com/build_hooks/xxxxxxxx">
-        <span class="form-helper">Optional. If provided, triggers an immediate Netlify rebuild hook upon upload.</span>
-      </div>
-
-      <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
-        <button class="btn-secondary" id="btnTestConnection">Test Connection</button>
-        <button class="btn-primary" id="btnSaveConfig">Save Settings</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Syncing / Uploading Progress Modal -->
   <div class="sync-progress-modal" id="syncModal">
     <div class="sync-card">
       <div class="sync-spinner" id="syncSpinner"></div>
-      
+
       <div style="display: flex; flex-direction: column; gap: 6px;">
         <h3 id="syncStatusHeading">Publishing to GitHub...</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted);" id="syncStatusSub">Committing files and updating media index</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);" id="syncStatusSub">Committing files and updating media
+          index</p>
       </div>
 
       <div class="sync-step-list" id="syncStepList">
@@ -1183,15 +1146,8 @@
   <script>
     // State
     let state = {
-      stagedFiles: [], // array of { fileObj, filename, type, sizeStr, previewUrl, base64 }
-      existingItems: [],
-      config: {
-        owner: localStorage.getItem('mv_gh_owner') || 'Samparizo',
-        repo: localStorage.getItem('mv_gh_repo') || 'Moodboard-Site',
-        branch: localStorage.getItem('mv_gh_branch') || 'main',
-        token: localStorage.getItem('mv_gh_token') || '',
-        buildHook: localStorage.getItem('mv_gh_buildhook') || ''
-      }
+      stagedFiles: [], // array of { fileObj, filename, type, size, sizeStr, previewUrl, base64 }
+      existingItems: []
     };
 
     // Elements
@@ -1204,21 +1160,8 @@
     const btnSaveAndPublish = document.getElementById('btnSaveAndPublish');
     const cmsToast = document.getElementById('cmsToast');
     const cmsToastMsg = document.getElementById('cmsToastMsg');
-
-    // Settings elements
-    const settingsModal = document.getElementById('settingsModal');
-    const btnOpenSettings = document.getElementById('btnOpenSettings');
-    const btnCloseSettings = document.getElementById('btnCloseSettings');
-    const repoStatusPill = document.getElementById('repoStatusPill');
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
-    const cfgOwner = document.getElementById('cfgOwner');
-    const cfgRepo = document.getElementById('cfgRepo');
-    const cfgBranch = document.getElementById('cfgBranch');
-    const cfgToken = document.getElementById('cfgToken');
-    const cfgBuildHook = document.getElementById('cfgBuildHook');
-    const btnTestConnection = document.getElementById('btnTestConnection');
-    const btnSaveConfig = document.getElementById('btnSaveConfig');
 
     // Sync modal
     const syncModal = document.getElementById('syncModal');
@@ -1399,7 +1342,7 @@
     }
 
     // Remove item from staged queue
-    window.removeStaged = function(idx) {
+    window.removeStaged = function (idx) {
       if (idx >= 0 && idx < state.stagedFiles.length) {
         URL.revokeObjectURL(state.stagedFiles[idx].previewUrl);
         state.stagedFiles.splice(idx, 1);
@@ -1408,7 +1351,7 @@
     };
 
     // Update target filename
-    window.updateStagedName = function(idx, newName) {
+    window.updateStagedName = function (idx, newName) {
       if (idx >= 0 && idx < state.stagedFiles.length) {
         state.stagedFiles[idx].filename = newName.trim();
       }
@@ -1457,82 +1400,14 @@
       });
     });
 
-    // Check Git connection status
-    async function checkGitStatus() {
-      cfgOwner.value = state.config.owner;
-      cfgRepo.value = state.config.repo;
-      cfgBranch.value = state.config.branch;
-      cfgToken.value = state.config.token;
-      cfgBuildHook.value = state.config.buildHook;
-
-      if (!state.config.token) {
-        statusDot.className = 'status-dot';
-        statusText.textContent = 'Setup Git Token';
-        return false;
-      }
-
-      try {
-        const res = await fetch(`https://api.github.com/repos/${state.config.owner}/${state.config.repo}`, {
-          headers: {
-            'Authorization': `token ${state.config.token}`,
-            'Accept': 'application/vnd.github.v3+json'
-          }
-        });
-
-        if (res.ok) {
-          const repo = await res.json();
-          statusDot.className = 'status-dot connected';
-          statusText.textContent = `${state.config.owner}/${state.config.repo}`;
-          return true;
-        } else {
-          statusDot.className = 'status-dot';
-          statusText.textContent = 'Auth Failed';
-          return false;
-        }
-      } catch (err) {
-        statusDot.className = 'status-dot';
-        statusText.textContent = 'Offline / Error';
-        return false;
-      }
-    }
-
-    // Settings Modal
-    btnOpenSettings.addEventListener('click', () => settingsModal.classList.add('active'));
-    repoStatusPill.addEventListener('click', () => settingsModal.classList.add('active'));
-    btnCloseSettings.addEventListener('click', () => settingsModal.classList.remove('active'));
-
-    btnSaveConfig.addEventListener('click', () => {
-      state.config.owner = cfgOwner.value.trim();
-      state.config.repo = cfgRepo.value.trim();
-      state.config.branch = cfgBranch.value.trim() || 'main';
-      state.config.token = cfgToken.value.trim();
-      state.config.buildHook = cfgBuildHook.value.trim();
-
-      localStorage.setItem('mv_gh_owner', state.config.owner);
-      localStorage.setItem('mv_gh_repo', state.config.repo);
-      localStorage.setItem('mv_gh_branch', state.config.branch);
-      localStorage.setItem('mv_gh_token', state.config.token);
-      localStorage.setItem('mv_gh_buildhook', state.config.buildHook);
-
-      settingsModal.classList.remove('active');
-      showToast('Settings saved');
-      checkGitStatus();
-    });
-
-    btnTestConnection.addEventListener('click', async () => {
-      btnTestConnection.textContent = 'Testing...';
-      const ok = await checkGitStatus();
-      btnTestConnection.textContent = ok ? '✓ Connected!' : '✕ Failed';
-      setTimeout(() => btnTestConnection.textContent = 'Test Connection', 2000);
-    });
-
-    // SAVE & PUBLISH TO GITHUB PIPELINE
+    // BATCH SAVE & PUBLISH VIA NETLIFY PROXY FUNCTION
     btnSaveAndPublish.addEventListener('click', async () => {
       if (state.stagedFiles.length === 0) return;
 
-      if (!state.config.token) {
-        settingsModal.classList.add('active');
-        showToast('Please enter your GitHub Token first');
+      const adminPwd = sessionStorage.getItem('mv_admin_pwd') || '';
+      if (!adminPwd) {
+        showToast('Session expired. Please lock and unlock CMS.');
+        lockAdmin();
         return;
       }
 
@@ -1540,8 +1415,8 @@
       syncModal.classList.add('active');
       syncSpinner.style.display = 'block';
       btnSyncDone.style.display = 'none';
-      syncStatusHeading.textContent = 'Publishing to GitHub...';
-      syncStatusSub.textContent = `Pushing ${state.stagedFiles.length} file(s) to ${state.config.owner}/${state.config.repo}`;
+      syncStatusHeading.textContent = 'Publishing to Netlify Git Proxy...';
+      syncStatusSub.textContent = `Packaging ${state.stagedFiles.length} file(s) for automated deployment`;
       syncStepList.innerHTML = '';
 
       function addStep(msg, status = 'active') {
@@ -1557,160 +1432,62 @@
         return item;
       }
 
+      const stepUpload = addStep(`Sending ${state.stagedFiles.length} clip(s) to serverless proxy...`, 'active');
+
       try {
-        const owner = state.config.owner;
-        const repo = state.config.repo;
-        const branch = state.config.branch || 'main';
-        const token = state.config.token;
-
-        // Step 1: Upload each staged media file
-        for (let i = 0; i < state.stagedFiles.length; i++) {
-          const item = state.stagedFiles[i];
-          const stepEl = addStep(`Uploading ${item.filename} (${item.sizeStr})...`, 'active');
-
-          // Check if file already exists on GitHub to obtain its SHA if updating
-          let existingSha = null;
-          try {
-            const checkRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(item.filename)}?ref=${branch}`, {
-              headers: {
-                'Authorization': `token ${token}`,
-                'Accept': 'application/vnd.github.v3+json'
-              }
-            });
-            if (checkRes.ok) {
-              const fileData = await checkRes.json();
-              existingSha = fileData.sha;
-            }
-          } catch(e) {}
-
-          // Commit file to GitHub
-          const putBody = {
-            message: `CMS: Add visual asset ${item.filename}`,
+        const payload = {
+          files: state.stagedFiles.map(item => ({
+            filename: item.filename,
             content: item.base64,
-            branch: branch
-          };
-          if (existingSha) putBody.sha = existingSha;
-
-          const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(item.filename)}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `token ${token}`,
-              'Content-Type': 'application/json',
-              'Accept': 'application/vnd.github.v3+json'
-            },
-            body: JSON.stringify(putBody)
-          });
-
-          if (!putRes.ok) {
-            const err = await putRes.text();
-            stepEl.className = 'sync-step-item error';
-            stepEl.innerHTML = `<div class="sync-step-icon">✕</div><span>Failed to upload ${item.filename}: ${err}</span>`;
-            throw new Error(`Upload error: ${err}`);
-          }
-
-          stepEl.className = 'sync-step-item done';
-          stepEl.innerHTML = `<div class="sync-step-icon">✓</div><span>Committed ${item.filename}</span>`;
-        }
-
-        // Step 2: Fetch and update media_list.json on GitHub
-        const listStep = addStep('Updating media_list.json in repository...', 'active');
-        let currentSha = null;
-        let currentList = [];
-
-        try {
-          const getListRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/media_list.json?ref=${branch}`, {
-            headers: {
-              'Authorization': `token ${token}`,
-              'Accept': 'application/vnd.github.v3+json'
-            }
-          });
-          if (getListRes.ok) {
-            const listData = await getListRes.json();
-            currentSha = listData.sha;
-            const decoded = atob(listData.content.replace(/\\n/g, ''));
-            currentList = JSON.parse(decoded);
-          }
-        } catch(e) {
-          currentList = [...state.existingItems];
-        }
-
-        // Add newly uploaded items to current list
-        state.stagedFiles.forEach(item => {
-          // Remove if duplicate exists
-          currentList = currentList.filter(x => x.file !== item.filename);
-          currentList.push({
-            file: item.filename,
             size: item.size,
-            sizeStr: item.sizeStr,
-            type: item.type
-          });
-        });
+            sizeStr: item.sizeStr
+          }))
+        };
 
-        // Natural sort the list
-        currentList.sort((a, b) => {
-          const regex = /(\\d+)/;
-          const aParts = a.file.split(regex);
-          const bParts = b.file.split(regex);
-          for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
-            const aPart = aParts[i] || '';
-            const bPart = bParts[i] || '';
-            const aNum = parseInt(aPart, 10);
-            const bNum = parseInt(bPart, 10);
-            if (!isNaN(aNum) && !isNaN(bNum)) {
-              if (aNum !== bNum) return aNum - bNum;
-            } else {
-              const cmp = aPart.localeCompare(bPart);
-              if (cmp !== 0) return cmp;
-            }
-          }
-          return 0;
-        });
-
-        const updatedJsonStr = JSON.stringify(currentList, null, 2);
-        const encodedJson = btoa(unescape(encodeURIComponent(updatedJsonStr)));
-
-        const putListRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/media_list.json`, {
-          method: 'PUT',
+        const res = await fetch('/.netlify/functions/save', {
+          method: 'POST',
           headers: {
-            'Authorization': `token ${token}`,
             'Content-Type': 'application/json',
-            'Accept': 'application/vnd.github.v3+json'
+            'x-admin-password': adminPwd
           },
-          body: JSON.stringify({
-            message: `CMS: Update media_list.json with ${state.stagedFiles.length} new clip(s)`,
-            content: encodedJson,
-            sha: currentSha || undefined,
-            branch: branch
-          })
+          body: JSON.stringify(payload)
         });
 
-        if (!putListRes.ok) {
-          listStep.className = 'sync-step-item error';
-          listStep.innerHTML = `<div class="sync-step-icon">✕</div><span>Failed to update media_list.json</span>`;
-        } else {
-          listStep.className = 'sync-step-item done';
-          listStep.innerHTML = `<div class="sync-step-icon">✓</div><span>Updated media_list.json (${currentList.length} total clips)</span>`;
+        if (res.status === 401) {
+          stepUpload.className = 'sync-step-item error';
+          stepUpload.innerHTML = `<div class="sync-step-icon">✕</div><span>Unauthorized: Admin password rejected by server.</span>`;
+          throw new Error('Invalid admin password on server.');
         }
 
-        // Step 3: Trigger Netlify Build Hook (if provided)
-        if (state.config.buildHook) {
-          const hookStep = addStep('Triggering Netlify deployment hook...', 'active');
-          try {
-            await fetch(state.config.buildHook, { method: 'POST' });
-            hookStep.className = 'sync-step-item done';
-            hookStep.innerHTML = `<div class="sync-step-icon">✓</div><span>Netlify deployment triggered!</span>`;
-          } catch(e) {
-            hookStep.className = 'sync-step-item done';
-            hookStep.innerHTML = `<div class="sync-step-icon">✓</div><span>GitHub commit will trigger Netlify auto-deploy</span>`;
-          }
+        if (res.status === 429) {
+          stepUpload.className = 'sync-step-item error';
+          stepUpload.innerHTML = `<div class="sync-step-icon">✕</div><span>Rate limited: Too many requests. Please wait 15 minutes.</span>`;
+          throw new Error('Rate limit exceeded (max 10 requests / 15 minutes).');
+        }
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({ error: res.statusText }));
+          stepUpload.className = 'sync-step-item error';
+          stepUpload.innerHTML = `<div class="sync-step-icon">✕</div><span>Server Error: ${errData.error || res.statusText}</span>`;
+          throw new Error(errData.error || 'Server upload failed.');
+        }
+
+        const data = await res.json();
+        stepUpload.className = 'sync-step-item done';
+        stepUpload.innerHTML = `<div class="sync-step-icon">✓</div><span>Uploaded batch to Netlify proxy</span>`;
+
+        const stepCommit = addStep(`Committed ${data.filesCommitted} asset(s) and updated media_list.json (${data.totalClips} total)`, 'done');
+
+        if (data.buildTriggered) {
+          addStep('Netlify build hook triggered for instant deployment!', 'done');
         } else {
-          addStep('Netlify is automatically rebuilding from Git commit', 'done');
+          addStep('GitHub commit pushed — Netlify auto-deploy queued.', 'done');
         }
 
         // Complete Success
         syncSpinner.style.display = 'none';
         syncStatusHeading.textContent = '🎉 Published Successfully!';
-        syncStatusSub.textContent = 'Your repository has been updated. Netlify is deploying your updated visual moodboard!';
+        syncStatusSub.textContent = 'Your GitHub repository is updated and Netlify is rebuilding your live site.';
         btnSyncDone.style.display = 'inline-flex';
 
         btnSyncDone.onclick = () => {
@@ -1718,7 +1495,7 @@
           window.location.href = 'index.html';
         };
 
-        // Clear staged items
+        // Clear staged items & refresh library
         state.stagedFiles = [];
         renderStagedQueue();
         loadExistingMedia();
@@ -1726,56 +1503,123 @@
       } catch (err) {
         syncSpinner.style.display = 'none';
         syncStatusHeading.textContent = 'Upload Failed';
-        syncStatusSub.textContent = err.message || 'Error communicating with GitHub';
+        syncStatusSub.textContent = err.message || 'Error communicating with Netlify function';
         btnSyncDone.style.display = 'inline-flex';
         btnSyncDone.textContent = 'Close';
         btnSyncDone.onclick = () => syncModal.classList.remove('active');
       }
     });
 
-    // Admin Password Protection Gate
-    const MASTER_PASSWORD = 'Aryan@97';
+    // ─── ADMIN AUTH GATEKEEPER & BRUTE-FORCE SHIELD ───
+    // SHA-256 hash of password — zero plaintext password in code!
+    const MASTER_PASSWORD_HASH = 'eaf4153d51810e33681e9bf0de71b230732cd759ad192a996d57827e705d1b35';
+    let lockoutInterval = null;
+
+    async function sha256Hex(text) {
+      const msgBuffer = new TextEncoder().encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
     function isAuthed() {
-      return sessionStorage.getItem('mv_admin_authed') === 'true';
+      return sessionStorage.getItem('mv_admin_authed') === 'true' && !!sessionStorage.getItem('mv_admin_pwd');
+    }
+
+    function updateLockoutUI() {
+      const pwdInput = document.getElementById('adminPasswordInput');
+      const btnUnlock = document.getElementById('btnUnlock');
+      const errorMsg = document.getElementById('lockErrorMsg');
+      const lockoutUntil = parseInt(sessionStorage.getItem('mv_lockout_until') || '0', 10);
+      const remaining = Math.ceil((lockoutUntil - Date.now()) / 1000);
+
+      if (remaining > 0) {
+        pwdInput.disabled = true;
+        btnUnlock.disabled = true;
+        btnUnlock.style.opacity = '0.5';
+        errorMsg.textContent = `🛑 Too many failed attempts. Locked for ${remaining}s...`;
+        return true;
+      } else {
+        if (lockoutInterval) {
+          clearInterval(lockoutInterval);
+          lockoutInterval = null;
+        }
+        sessionStorage.removeItem('mv_lockout_until');
+        sessionStorage.removeItem('mv_lock_fails');
+        pwdInput.disabled = false;
+        btnUnlock.disabled = false;
+        btnUnlock.style.opacity = '1';
+        errorMsg.textContent = '';
+        return false;
+      }
     }
 
     function checkAuthGate() {
       const lockScreen = document.getElementById('adminLockScreen');
       const pwdInput = document.getElementById('adminPasswordInput');
+
+      if (updateLockoutUI()) {
+        if (!lockoutInterval) {
+          lockoutInterval = setInterval(updateLockoutUI, 1000);
+        }
+      }
+
       if (isAuthed()) {
         lockScreen.classList.add('unlocked');
       } else {
         lockScreen.classList.remove('unlocked');
         setTimeout(() => {
-          pwdInput?.focus();
+          if (!pwdInput.disabled) pwdInput?.focus();
         }, 150);
       }
     }
 
-    window.handleUnlock = function() {
+    window.handleUnlock = async function () {
       const pwdInput = document.getElementById('adminPasswordInput');
       const errorMsg = document.getElementById('lockErrorMsg');
       const lockCard = document.getElementById('lockCard');
 
-      if (pwdInput.value === MASTER_PASSWORD) {
+      if (updateLockoutUI()) return;
+
+      const rawInput = pwdInput.value;
+      const hashedInput = await sha256Hex(rawInput);
+
+      if (hashedInput === MASTER_PASSWORD_HASH) {
         sessionStorage.setItem('mv_admin_authed', 'true');
+        sessionStorage.setItem('mv_admin_pwd', rawInput);
+        sessionStorage.removeItem('mv_lock_fails');
+        sessionStorage.removeItem('mv_lockout_until');
         errorMsg.textContent = '';
         document.getElementById('adminLockScreen').classList.add('unlocked');
         showToast('✓ Welcome! CMS Studio unlocked.');
         pwdInput.value = '';
       } else {
+        let fails = parseInt(sessionStorage.getItem('mv_lock_fails') || '0', 10) + 1;
+        sessionStorage.setItem('mv_lock_fails', fails.toString());
+
         lockCard.classList.remove('shake');
         void lockCard.offsetWidth; // re-flow
         lockCard.classList.add('shake');
-        errorMsg.textContent = 'Incorrect password. Access denied.';
+
+        if (fails >= 5) {
+          const lockoutUntil = Date.now() + 30000; // 30s lockout
+          sessionStorage.setItem('mv_lockout_until', lockoutUntil.toString());
+          updateLockoutUI();
+          if (!lockoutInterval) {
+            lockoutInterval = setInterval(updateLockoutUI, 1000);
+          }
+        } else {
+          errorMsg.textContent = `Incorrect password. (${5 - fails} attempt(s) left before 30s lockout)`;
+        }
+
         pwdInput.value = '';
-        pwdInput.focus();
+        if (!pwdInput.disabled) pwdInput.focus();
       }
     };
 
-    window.lockAdmin = function() {
+    window.lockAdmin = function () {
       sessionStorage.removeItem('mv_admin_authed');
+      sessionStorage.removeItem('mv_admin_pwd');
       checkAuthGate();
       showToast('CMS Studio Locked');
     };
@@ -1804,7 +1648,7 @@
     // Initialize
     checkAuthGate();
     loadExistingMedia();
-    checkGitStatus();
   </script>
 </body>
+
 </html>

@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>Moodboard Motion Vault • Visual GIF & Clip Stream</title>
-  <meta name="description"
-    content="Ultra-smooth, single-page responsive scroll gallery for 70+ animated GIFs and video clips. Designed for on-the-go viewing.">
+  <meta name="description" content="Ultra-smooth, single-page responsive scroll gallery for 70+ animated GIFs and video clips. Designed for on-the-go viewing.">
   <meta name="theme-color" content="#090a0f">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
-    rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --bg-dark: #07080c;
@@ -58,7 +54,7 @@
 
     body {
       min-height: 100vh;
-      background:
+      background: 
         radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
         radial-gradient(circle at 90% 40%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.07) 0%, transparent 50%),
@@ -302,8 +298,7 @@
       transition: var(--transition-smooth);
     }
 
-    .sort-select:hover,
-    .sort-select:focus {
+    .sort-select:hover, .sort-select:focus {
       border-color: var(--border-focus);
       color: var(--text-main);
     }
@@ -541,13 +536,8 @@
     }
 
     @keyframes shimmer {
-      0% {
-        background-position: 200% 0;
-      }
-
-      100% {
-        background-position: -200% 0;
-      }
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     .media-loaded .media-skeleton {
@@ -759,13 +749,8 @@
       box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    .lightbox-nav-btn.prev {
-      left: 24px;
-    }
-
-    .lightbox-nav-btn.next {
-      right: 24px;
-    }
+    .lightbox-nav-btn.prev { left: 24px; }
+    .lightbox-nav-btn.next { right: 24px; }
 
     .lightbox-nav-btn svg {
       width: 22px;
@@ -1047,55 +1032,40 @@
       header.site-header {
         padding: 10px 14px;
       }
-
       .brand-text p {
         display: none;
       }
-
       .controls-wrap {
         width: 100%;
         justify-content: space-between;
       }
-
       .search-box {
         order: 1;
         width: 100%;
         max-width: 100%;
       }
-
       .filter-tabs {
         order: 2;
         overflow-x: auto;
         max-width: 100%;
         padding-bottom: 4px;
       }
-
       .view-switcher {
         order: 3;
       }
-
       .gallery-grid.layout-masonry {
         grid-template-columns: 1fr;
       }
-
       .lightbox-nav-btn {
         width: 40px;
         height: 40px;
       }
-
-      .lightbox-nav-btn.prev {
-        left: 10px;
-      }
-
-      .lightbox-nav-btn.next {
-        right: 10px;
-      }
-
+      .lightbox-nav-btn.prev { left: 10px; }
+      .lightbox-nav-btn.next { right: 10px; }
       .floating-fab-group {
         bottom: 16px;
         right: 16px;
       }
-
       .footer-inner {
         flex-direction: column;
         align-items: flex-start;
@@ -1103,24 +1073,22 @@
     }
   </style>
 </head>
-
 <body>
 
   <!-- Sticky Top Header -->
   <header class="site-header" id="siteHeader">
     <div class="header-inner">
-
+      
       <!-- Brand Logo / Title -->
       <div class="brand-wrap" id="brandHome" title="Scroll to top & reset filters">
         <div class="brand-logo">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z" />
+            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
           </svg>
         </div>
         <div class="brand-text">
           <h1>
-            MOTION VAULT
+            MOTION VAULT 
             <span class="badge-total" id="badgeTotal">72 CLIPS</span>
           </h1>
           <p>Moodboard animated clips stream • Single-page view</p>
@@ -1129,15 +1097,14 @@
 
       <!-- Controls & Filters -->
       <div class="controls-wrap">
-
+        
         <!-- Search -->
         <div class="search-box">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="searchInput" class="search-input"
-            placeholder="Search clips (e.g. clip 12, piechart)..." autocomplete="off" spellcheck="false">
+          <input type="text" id="searchInput" class="search-input" placeholder="Search clips (e.g. clip 12, piechart)..." autocomplete="off" spellcheck="false">
           <button class="search-clear-btn" id="searchClearBtn" title="Clear search">✕</button>
         </div>
 
@@ -1159,8 +1126,7 @@
 
         <!-- Layout Mode Switcher -->
         <div class="view-switcher">
-          <button class="view-btn" data-layout="feed" id="viewFeed"
-            title="Vertical Feed View (Best for mobile on-the-go scrolling)">
+          <button class="view-btn" data-layout="feed" id="viewFeed" title="Vertical Feed View (Best for mobile on-the-go scrolling)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="4" y="2" width="16" height="20" rx="3"></rect>
               <line x1="8" y1="7" x2="16" y2="7"></line>
@@ -1200,15 +1166,14 @@
         <!-- Auto-Play / Stream Presentation Mode -->
         <button class="icon-action-btn" id="btnAutoStream" title="Toggle Auto-Scroll stream presentation mode">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
           </svg>
         </button>
 
         <!-- Shortcuts Help modal trigger -->
         <button class="icon-action-btn" id="btnShortcuts" title="Keyboard Shortcuts (?)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-            <path
-              d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z" />
+            <path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/>
           </svg>
         </button>
 
@@ -1238,7 +1203,7 @@
 
   <!-- Gallery Grid Container -->
   <main class="gallery-container">
-
+    
     <!-- Empty results state -->
     <div class="empty-state" id="emptyState">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1262,8 +1227,7 @@
       <div class="footer-brand">
         <div class="footer-title">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-primary)">
-            <path
-              d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z" />
+            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
           </svg>
           MOTION VAULT
         </div>
@@ -1279,8 +1243,7 @@
       </div>
 
       <div class="footer-admin-link">
-        <a href="admin.html" class="admin-cms-btn" id="footerAdminLink"
-          title="Access CMS to upload new GIFs and video clips">
+        <a href="admin.html" class="admin-cms-btn" id="footerAdminLink" title="Access CMS to upload new GIFs and video clips">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
@@ -1293,7 +1256,7 @@
 
   <!-- Fullscreen Lightbox / Theatre Mode Modal -->
   <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true">
-
+    
     <!-- Header inside Lightbox -->
     <div class="lightbox-header">
       <div class="lightbox-title-wrap">
@@ -1306,15 +1269,14 @@
         <!-- Fav Button -->
         <button class="btn-fav" id="lightboxFavBtn" title="Toggle Favorite">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
           </svg>
         </button>
 
         <!-- Slideshow Play / Pause -->
         <button class="btn-action-sm" id="lightboxSlideshowBtn" title="Auto Slideshow (Spacebar)">
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
+            <path d="M8 5v14l11-7z"/>
           </svg>
         </button>
 
@@ -1404,7 +1366,7 @@
 
   <!-- Floating Floating Action Buttons -->
   <div class="floating-fab-group">
-
+    
     <!-- Random Clip Jump button -->
     <button class="fab-btn" id="fabRandom" title="Jump to Random Clip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1440,7 +1402,7 @@
   <!-- Embedded Media Data & Runtime Logic -->
   <script>
     // Embedded Master Manifest
-    const MEDIA_ITEMS = [{ "file": "clip (1).gif", "size": 393732, "sizeStr": "385 KB", "type": "gif" }, { "file": "clip (1).mp4", "size": 1291062, "sizeStr": "1.2 MB", "type": "mp4" }, { "file": "clip (2).gif", "size": 340267, "sizeStr": "332 KB", "type": "gif" }, { "file": "clip (2).mp4", "size": 1060932, "sizeStr": "1.0 MB", "type": "mp4" }, { "file": "clip (3).gif", "size": 352364, "sizeStr": "344 KB", "type": "gif" }, { "file": "clip (3).mp4", "size": 4151873, "sizeStr": "4.0 MB", "type": "mp4" }, { "file": "clip (4).gif", "size": 346072, "sizeStr": "338 KB", "type": "gif" }, { "file": "clip (5).gif", "size": 442109, "sizeStr": "432 KB", "type": "gif" }, { "file": "clip (6).gif", "size": 816620, "sizeStr": "797 KB", "type": "gif" }, { "file": "clip (7).gif", "size": 847527, "sizeStr": "828 KB", "type": "gif" }, { "file": "clip (8).gif", "size": 439981, "sizeStr": "430 KB", "type": "gif" }, { "file": "clip (9).gif", "size": 186440, "sizeStr": "182 KB", "type": "gif" }, { "file": "clip (10).gif", "size": 477404, "sizeStr": "466 KB", "type": "gif" }, { "file": "clip (11).gif", "size": 1192087, "sizeStr": "1.1 MB", "type": "gif" }, { "file": "clip (12).gif", "size": 1192087, "sizeStr": "1.1 MB", "type": "gif" }, { "file": "clip (13).gif", "size": 3249889, "sizeStr": "3.1 MB", "type": "gif" }, { "file": "clip (14).gif", "size": 2483238, "sizeStr": "2.4 MB", "type": "gif" }, { "file": "clip (15).gif", "size": 1016020, "sizeStr": "992 KB", "type": "gif" }, { "file": "clip (16).gif", "size": 2798896, "sizeStr": "2.7 MB", "type": "gif" }, { "file": "clip (17).gif", "size": 2134954, "sizeStr": "2.0 MB", "type": "gif" }, { "file": "clip (18).gif", "size": 1042125, "sizeStr": "1018 KB", "type": "gif" }, { "file": "clip (19).gif", "size": 3654258, "sizeStr": "3.5 MB", "type": "gif" }, { "file": "clip (20).gif", "size": 627265, "sizeStr": "613 KB", "type": "gif" }, { "file": "clip (21).gif", "size": 500768, "sizeStr": "489 KB", "type": "gif" }, { "file": "clip (22).gif", "size": 2184092, "sizeStr": "2.1 MB", "type": "gif" }, { "file": "clip (23).gif", "size": 714505, "sizeStr": "698 KB", "type": "gif" }, { "file": "clip (24).gif", "size": 837764, "sizeStr": "818 KB", "type": "gif" }, { "file": "clip (25).gif", "size": 252841, "sizeStr": "247 KB", "type": "gif" }, { "file": "clip (26).gif", "size": 1592885, "sizeStr": "1.5 MB", "type": "gif" }, { "file": "clip (27).gif", "size": 316166, "sizeStr": "309 KB", "type": "gif" }, { "file": "clip (28).gif", "size": 318221, "sizeStr": "311 KB", "type": "gif" }, { "file": "clip (29).gif", "size": 1045758, "sizeStr": "1021 KB", "type": "gif" }, { "file": "clip (30).gif", "size": 2746826, "sizeStr": "2.6 MB", "type": "gif" }, { "file": "clip (31).gif", "size": 3092283, "sizeStr": "2.9 MB", "type": "gif" }, { "file": "clip (32).gif", "size": 2697055, "sizeStr": "2.6 MB", "type": "gif" }, { "file": "clip (33).gif", "size": 1052839, "sizeStr": "1.0 MB", "type": "gif" }, { "file": "clip (34).gif", "size": 808377, "sizeStr": "789 KB", "type": "gif" }, { "file": "clip (35).gif", "size": 275601, "sizeStr": "269 KB", "type": "gif" }, { "file": "clip (36).gif", "size": 82314, "sizeStr": "80 KB", "type": "gif" }, { "file": "clip (37).gif", "size": 1899832, "sizeStr": "1.8 MB", "type": "gif" }, { "file": "clip (38).gif", "size": 1769666, "sizeStr": "1.7 MB", "type": "gif" }, { "file": "clip (39).gif", "size": 1988859, "sizeStr": "1.9 MB", "type": "gif" }, { "file": "clip (40).gif", "size": 1599748, "sizeStr": "1.5 MB", "type": "gif" }, { "file": "clip (41).gif", "size": 1599748, "sizeStr": "1.5 MB", "type": "gif" }, { "file": "clip (42).gif", "size": 2616623, "sizeStr": "2.5 MB", "type": "gif" }, { "file": "clip (43).gif", "size": 1256100, "sizeStr": "1.2 MB", "type": "gif" }, { "file": "clip (44).gif", "size": 2332161, "sizeStr": "2.2 MB", "type": "gif" }, { "file": "clip (45).gif", "size": 1895316, "sizeStr": "1.8 MB", "type": "gif" }, { "file": "clip (46).gif", "size": 1767130, "sizeStr": "1.7 MB", "type": "gif" }, { "file": "clip (47).gif", "size": 1977969, "sizeStr": "1.9 MB", "type": "gif" }, { "file": "clip (48).gif", "size": 1389542, "sizeStr": "1.3 MB", "type": "gif" }, { "file": "clip (49).gif", "size": 1389542, "sizeStr": "1.3 MB", "type": "gif" }, { "file": "clip (50).gif", "size": 2077254, "sizeStr": "2.0 MB", "type": "gif" }, { "file": "clip (51).gif", "size": 4338488, "sizeStr": "4.1 MB", "type": "gif" }, { "file": "clip (52).gif", "size": 2262960, "sizeStr": "2.2 MB", "type": "gif" }, { "file": "clip (53).gif", "size": 610510, "sizeStr": "596 KB", "type": "gif" }, { "file": "clip (54).gif", "size": 651481, "sizeStr": "636 KB", "type": "gif" }, { "file": "clip (55).gif", "size": 4069777, "sizeStr": "3.9 MB", "type": "gif" }, { "file": "clip (56).gif", "size": 2357027, "sizeStr": "2.2 MB", "type": "gif" }, { "file": "clip (57).gif", "size": 234122, "sizeStr": "229 KB", "type": "gif" }, { "file": "clip (58).gif", "size": 596456, "sizeStr": "582 KB", "type": "gif" }, { "file": "clip (59).gif", "size": 294435, "sizeStr": "288 KB", "type": "gif" }, { "file": "clip (60).gif", "size": 1696872, "sizeStr": "1.6 MB", "type": "gif" }, { "file": "clip (61).gif", "size": 1226207, "sizeStr": "1.2 MB", "type": "gif" }, { "file": "clip (62).gif", "size": 3454198, "sizeStr": "3.3 MB", "type": "gif" }, { "file": "clip (63).gif", "size": 3315843, "sizeStr": "3.2 MB", "type": "gif" }, { "file": "clip (64).gif", "size": 1902246, "sizeStr": "1.8 MB", "type": "gif" }, { "file": "clip (65).gif", "size": 1698686, "sizeStr": "1.6 MB", "type": "gif" }, { "file": "clip (66).gif", "size": 1660379, "sizeStr": "1.6 MB", "type": "gif" }, { "file": "clip.gif", "size": 166674, "sizeStr": "163 KB", "type": "gif" }, { "file": "clip.mp4", "size": 1007763, "sizeStr": "984 KB", "type": "mp4" }, { "file": "piechart.gif", "size": 69450, "sizeStr": "68 KB", "type": "gif" }];
+    const MEDIA_ITEMS = [{"file":"clip (1).gif","size":393732,"sizeStr":"385 KB","type":"gif"},{"file":"clip (1).mp4","size":1291062,"sizeStr":"1.2 MB","type":"mp4"},{"file":"clip (2).gif","size":340267,"sizeStr":"332 KB","type":"gif"},{"file":"clip (2).mp4","size":1060932,"sizeStr":"1.0 MB","type":"mp4"},{"file":"clip (3).gif","size":352364,"sizeStr":"344 KB","type":"gif"},{"file":"clip (3).mp4","size":4151873,"sizeStr":"4.0 MB","type":"mp4"},{"file":"clip (4).gif","size":346072,"sizeStr":"338 KB","type":"gif"},{"file":"clip (5).gif","size":442109,"sizeStr":"432 KB","type":"gif"},{"file":"clip (6).gif","size":816620,"sizeStr":"797 KB","type":"gif"},{"file":"clip (7).gif","size":847527,"sizeStr":"828 KB","type":"gif"},{"file":"clip (8).gif","size":439981,"sizeStr":"430 KB","type":"gif"},{"file":"clip (9).gif","size":186440,"sizeStr":"182 KB","type":"gif"},{"file":"clip (10).gif","size":477404,"sizeStr":"466 KB","type":"gif"},{"file":"clip (11).gif","size":1192087,"sizeStr":"1.1 MB","type":"gif"},{"file":"clip (12).gif","size":1192087,"sizeStr":"1.1 MB","type":"gif"},{"file":"clip (13).gif","size":3249889,"sizeStr":"3.1 MB","type":"gif"},{"file":"clip (14).gif","size":2483238,"sizeStr":"2.4 MB","type":"gif"},{"file":"clip (15).gif","size":1016020,"sizeStr":"992 KB","type":"gif"},{"file":"clip (16).gif","size":2798896,"sizeStr":"2.7 MB","type":"gif"},{"file":"clip (17).gif","size":2134954,"sizeStr":"2.0 MB","type":"gif"},{"file":"clip (18).gif","size":1042125,"sizeStr":"1018 KB","type":"gif"},{"file":"clip (19).gif","size":3654258,"sizeStr":"3.5 MB","type":"gif"},{"file":"clip (20).gif","size":627265,"sizeStr":"613 KB","type":"gif"},{"file":"clip (21).gif","size":500768,"sizeStr":"489 KB","type":"gif"},{"file":"clip (22).gif","size":2184092,"sizeStr":"2.1 MB","type":"gif"},{"file":"clip (23).gif","size":714505,"sizeStr":"698 KB","type":"gif"},{"file":"clip (24).gif","size":837764,"sizeStr":"818 KB","type":"gif"},{"file":"clip (25).gif","size":252841,"sizeStr":"247 KB","type":"gif"},{"file":"clip (26).gif","size":1592885,"sizeStr":"1.5 MB","type":"gif"},{"file":"clip (27).gif","size":316166,"sizeStr":"309 KB","type":"gif"},{"file":"clip (28).gif","size":318221,"sizeStr":"311 KB","type":"gif"},{"file":"clip (29).gif","size":1045758,"sizeStr":"1021 KB","type":"gif"},{"file":"clip (30).gif","size":2746826,"sizeStr":"2.6 MB","type":"gif"},{"file":"clip (31).gif","size":3092283,"sizeStr":"2.9 MB","type":"gif"},{"file":"clip (32).gif","size":2697055,"sizeStr":"2.6 MB","type":"gif"},{"file":"clip (33).gif","size":1052839,"sizeStr":"1.0 MB","type":"gif"},{"file":"clip (34).gif","size":808377,"sizeStr":"789 KB","type":"gif"},{"file":"clip (35).gif","size":275601,"sizeStr":"269 KB","type":"gif"},{"file":"clip (36).gif","size":82314,"sizeStr":"80 KB","type":"gif"},{"file":"clip (37).gif","size":1899832,"sizeStr":"1.8 MB","type":"gif"},{"file":"clip (38).gif","size":1769666,"sizeStr":"1.7 MB","type":"gif"},{"file":"clip (39).gif","size":1988859,"sizeStr":"1.9 MB","type":"gif"},{"file":"clip (40).gif","size":1599748,"sizeStr":"1.5 MB","type":"gif"},{"file":"clip (41).gif","size":1599748,"sizeStr":"1.5 MB","type":"gif"},{"file":"clip (42).gif","size":2616623,"sizeStr":"2.5 MB","type":"gif"},{"file":"clip (43).gif","size":1256100,"sizeStr":"1.2 MB","type":"gif"},{"file":"clip (44).gif","size":2332161,"sizeStr":"2.2 MB","type":"gif"},{"file":"clip (45).gif","size":1895316,"sizeStr":"1.8 MB","type":"gif"},{"file":"clip (46).gif","size":1767130,"sizeStr":"1.7 MB","type":"gif"},{"file":"clip (47).gif","size":1977969,"sizeStr":"1.9 MB","type":"gif"},{"file":"clip (48).gif","size":1389542,"sizeStr":"1.3 MB","type":"gif"},{"file":"clip (49).gif","size":1389542,"sizeStr":"1.3 MB","type":"gif"},{"file":"clip (50).gif","size":2077254,"sizeStr":"2.0 MB","type":"gif"},{"file":"clip (51).gif","size":4338488,"sizeStr":"4.1 MB","type":"gif"},{"file":"clip (52).gif","size":2262960,"sizeStr":"2.2 MB","type":"gif"},{"file":"clip (53).gif","size":610510,"sizeStr":"596 KB","type":"gif"},{"file":"clip (54).gif","size":651481,"sizeStr":"636 KB","type":"gif"},{"file":"clip (55).gif","size":4069777,"sizeStr":"3.9 MB","type":"gif"},{"file":"clip (56).gif","size":2357027,"sizeStr":"2.2 MB","type":"gif"},{"file":"clip (57).gif","size":234122,"sizeStr":"229 KB","type":"gif"},{"file":"clip (58).gif","size":596456,"sizeStr":"582 KB","type":"gif"},{"file":"clip (59).gif","size":294435,"sizeStr":"288 KB","type":"gif"},{"file":"clip (60).gif","size":1696872,"sizeStr":"1.6 MB","type":"gif"},{"file":"clip (61).gif","size":1226207,"sizeStr":"1.2 MB","type":"gif"},{"file":"clip (62).gif","size":3454198,"sizeStr":"3.3 MB","type":"gif"},{"file":"clip (63).gif","size":3315843,"sizeStr":"3.2 MB","type":"gif"},{"file":"clip (64).gif","size":1902246,"sizeStr":"1.8 MB","type":"gif"},{"file":"clip (65).gif","size":1698686,"sizeStr":"1.6 MB","type":"gif"},{"file":"clip (66).gif","size":1660379,"sizeStr":"1.6 MB","type":"gif"},{"file":"clip.gif","size":166674,"sizeStr":"163 KB","type":"gif"},{"file":"clip.mp4","size":1007763,"sizeStr":"984 KB","type":"mp4"},{"file":"piechart.gif","size":69450,"sizeStr":"68 KB","type":"gif"}];
 
     // State
     let state = {
@@ -1515,7 +1477,7 @@
         showToast('Added to favorites ★');
       }
       updateFavCounts();
-
+      
       document.querySelectorAll(`[data-fav-file="${CSS.escape(filename)}"]`).forEach(el => {
         el.classList.toggle('active', state.favorites.has(filename));
       });
@@ -1561,7 +1523,7 @@
 
     function applyFiltersAndSort() {
       const q = state.searchQuery.toLowerCase().trim();
-
+      
       state.filtered = state.items.filter(item => {
         if (state.activeFilter === 'gif' && item.type !== 'gif') return false;
         if (state.activeFilter === 'mp4' && item.type !== 'mp4') return false;
@@ -1618,7 +1580,8 @@
 
             <div class="media-wrapper" onclick="openLightbox(${idx})" title="Click for fullscreen view">
               <div class="media-skeleton">Loading clip...</div>
-              ${isVideo ? `
+              ${
+                isVideo ? `
                   <video 
                     src="${encodedSrc}" 
                     autoplay 
@@ -1638,7 +1601,7 @@
                     onerror="this.parentElement.classList.add('media-loaded')"
                   >
                 `
-          }
+              }
             </div>
 
             <div class="card-footer">
@@ -1996,7 +1959,7 @@
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
-
+        
         const circumference = 2 * Math.PI * 23;
         const offset = circumference - (progress * circumference);
         circleProgressBar.style.strokeDashoffset = offset;
@@ -2016,5 +1979,4 @@
     }
   </script>
 </body>
-
 </html>
